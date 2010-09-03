@@ -1,0 +1,9 @@
+Package: signal
+Version: 0.1
+Date: 2010-09-03
+Title: Signal processing utilities
+Author: Paulo J. S. Jabardo <pjabardo@gipt.br>
+Maintainer: Paulo J. S. Jabardo <pjabardo@gipt.br>
+Depends: R (>= 2.8.0)
+Description: Some useful signal processing functions.
+License: GPL (>= 3)

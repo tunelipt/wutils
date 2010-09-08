@@ -1,9 +1,9 @@
-Package: signal
+Package: wind
 Version: 0.1
 Date: 2010-09-03
-Title: Signal processing utilities
+Title: Useful functions for data processing in a wind tunnel
 Author: Paulo J. S. Jabardo <pjabardo@gipt.br>
 Maintainer: Paulo J. S. Jabardo <pjabardo@gipt.br>
 Depends: R (>= 2.8.0)
-Description: Some useful signal processing functions.
+Description: Provides functions that are useful when processing data acquired in the wind tunnel. 
 License: GPL (>= 3)

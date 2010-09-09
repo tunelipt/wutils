@@ -93,7 +93,7 @@ buildFileName <- function(n, prefix='ponto', ext='.rda', sep='-', nc=NULL){
 join <- function(..., sep='', collapse=NULL)
   paste(..., sep=sep, collapse=collapse)
 
-basename <- function(path, ext=NULL){
+basename2 <- function(path, ext=NULL){
   path <- base::basename(path)
   if (is.null(ext))
     return(path)

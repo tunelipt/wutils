@@ -1,22 +1,37 @@
 
-msgSimNao <- function(msg=''){
+msgYesNo <- function(msg='', pt=FALSE){
+  if (pt){
+    y<-'S'
+    n<-'N'
+    question <- "Responda 'S' ou 'N'!\n"
+  }else{
+    y <- 'Y'
+    n <- 'N'
+    question <- "Answer 'Y' or 'N'!\n"
+  }
+  msg2 <- paste("(", y, "/", n, "): ", sep='')
   repeat{
-    ans <- toupper(readline(paste(msg, "(S/N): ")))
-    if (ans == "S" || ans == "N") break
-    cat("Responda 'S' ou 'N'!\n")
+    ans <- toupper(readline(paste(msg, msg2)))
+    if (ans == y || ans == n) break
+    cat(question)
   }
 
-  return(ifelse(ans=="S", TRUE, FALSE))
+  return(ifelse(ans==y, TRUE, FALSE))
 }
 
-mymenu <- function(choices, title=""){
+mymenu <- function(choices, title="", pt=FALSE){
+  if (pt)
+    question <- "Escolha: "
+  else
+    question <- "Choice: "
+  
   n <- length(choices)
   choices <- join(1:n, ": ", choices)
   repeat{
     cat(title, "\n\n")
     cat(choices, sep='\n')
     cat("\n")
-    ans <- readInteger("Escolha: ")
+    ans <- readInteger(question, pt)
     if (any(ans==1:n)) return(ans)
   }
 }
@@ -30,7 +45,7 @@ ltrim <- function(s, chars=" \n\t\r"){
   sub(pattern, "", s)
 }
 trim <- function(s, chars=' \n\t\r')
-  ltrim(rtrim(s))
+  ltrim(rtrim(s, chars), chars)
 
 isStrInt <- function(s){
   s <- trim(s)
@@ -47,20 +62,29 @@ isStrNum <- function(s){
 }
 
 
-readInteger <- function(msg=''){
+readInteger <- function(msg='', pt=FALSE){
+  if (pt)
+    question <- "Entre com um inteiro!\n"
+  else
+    question <- "Integer expected!\n"
+  
   repeat{
     ans <- readline(msg)
     if (isStrInt(ans)) return(as.integer(ans))
-    cat("Entre com um inteiro!\n")
+    cat(question)
   }
 
 }
 
-readNumber <- function(msg=''){
+readNumber <- function(msg='', pt=FALSE){
+  if (pt)
+    question <- "Entre com um número!\n"
+  else
+    question <- "Number expected!\n"
   repeat{
     ans <- readline(msg)
     if (isStrNum(ans)) return(as.double(ans))
-    cat("Entre com um número!\n")
+    cat(question)
   }
 }
 
@@ -75,7 +99,7 @@ buildFileNameFun <- function(..., prefix="ponto", ext=".rda", sep='-'){
     x <- list(...)
     nx <- length(x)
     if (nx != nnums)
-      stop("Esta funcao tem", nnums, "argumentos!\n")
+      stop("This function has", nnums, "arguments!\n")
     snums <- character(nnums)
     for (i in 1:nnums)
       snums[i] <- numString(x[[i]], nc[i])

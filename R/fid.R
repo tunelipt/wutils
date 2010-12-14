@@ -102,3 +102,33 @@ interpolateFid <- function(x, z, dt, dx=1, dz=1, interpfun=approx){
 
 }
   
+
+dtTable <- function(fname, x, z, dt, dec=','){
+
+  imax <- findMax(dt)
+  xmax <- imax[1]
+  zmax <- imax[2]
+ 
+  nx <- length(x)
+  nz <- length(z)
+
+  dt <- formatC(round(t(dt), 1), decimal.mark=dec)
+
+  dt[zmax,xmax] <- paste('\\textbf{', dt[zmax,xmax], '}', sep='')
+  dt <- cbind(paste(z), dt)
+ 
+  f <- file(fname, open='w')
+  ccc <- paste('c', '|', paste(rep('c', nx), collapse=''), sep='')
+  cat('\\begin{tabular}{', ccc,'}\n', sep='', file=f)
+  # Escrever o cabeçalho:
+  cat('\\hline\\hline\n', file=f)
+  cat('& ', paste(x, collapse=' & '), '\\\\\n', sep='', file=f)
+  cat('\\hline\\hline\n', file=f)
+  write.table(dt, file=f, quote=FALSE, sep=' & ', eol='\\\\\n\\hline\n',
+col.names=FALSE, row.names=FALSE)
+  cat('\\hline\\hline\n', file=f)
+  cat("\\end{tabular}\n", file=f)
+  close(f)
+}
+
+

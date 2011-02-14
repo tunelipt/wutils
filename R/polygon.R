@@ -2,25 +2,28 @@ require(gpclib)
 require(deldir)
 
 voronoi <- function(x,y, xb=NULL, yb=NULL){
-  if (is.null(xb))
-    xr <- range(x)
-  else
-    xr <- range(xb)
-  if (is.null(yb))
-    yr <- range(y)
-  else
-    yr <- range(yb)
+  if (is.null(xb)){
+    rx <- range(x)
+    dx <-rx[2] - rx[1]
+    xb <- c(rx[1] - 1.2*dx, rx[2] + 1.2*dx)
+  }
+
+  if (is.null(yb)){
+    ry <- range(y)
+    dy <-ry[2] - ry[1]
+    yb <- c(ry[1] - 1.2*dy, ry[2] + 1.2*dy)
+  }
   
-  dx <- xr[2]-xr[1]
-  dy <- yr[2]-yr[1]
-  
-  tri <- deldir(x,y, rw=c(xr[1]-dx, xr[2]+dx, yr[1]-dy, yr[2]+dy))
+  tri <- deldir(x,y, rw=c(xb[1], xb[2], yb[1], yb[2]))
 
   
-  return(tile.list(tri))
+  return(voronoi2polygonlst(tile.list(tri)))
 
 }
 
+make.poly <- function(x, y)   as(cbind(x, y), 'gpc.poly')
+
+  
 
 voronoi2polygonlst <- function(vor){
 

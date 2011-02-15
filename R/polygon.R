@@ -38,6 +38,69 @@ splitWith <- function(vor, hull){
 
 
 
+polygonArea <- function(x, y, lam=1){
+  n <- length(x)
+  x <- c(x, x[1])
+  y <- c(y, y[1])
+  area <- (x[1:n]*y[2:(n+1)] - x[2:(n+1)]*y[1:n])
+  area <- 0.5*abs(sum(area)) * lam^2
+  return(area)
+  
+}
+
+polygonCentroid <- function(x, y, lam=1){
+  A <- polygonArea(x, y, lam)
+  n <- length(x)
+  x <- c(x, x[1])
+  y <- c(y, y[1])
+  
+  cx <- (x[1:n]+x[2:(n+1)]) * (x[1:n]*y[2:(n+1)] - x[2:(n+1)]*y[1:n])
+  cx <- 1/(6*A) * sum(cx)
+  cy <- (y[1:n]+y[2:(n+1)]) * (x[1:n]*y[2:(n+1)] - x[2:(n+1)]*y[1:n])
+  cy <- 1/(6*A) * sum(cy)
+
+  return(c(cx, cy))
+}
+
+centroid.poly <- function(p){
+  pts <- get.pts(p)
+  np <- length(pts)
+
+  A <- sapply(pts, function(p) polygonArea(p$x, p$y))
+  C <- sapply(pts, function(p) polygonCentroid(p$x, p$y))
+
+  xc <- sum(C[1,] * A) / sum(A)
+  yc <- sum(C[2,] * A) / sum(A)
+
+  return(c(xc, yc))
+}
+  
+  
+forceFace <- function(p, pol, coords=NULL, norm=NULL, aproj=NULL){
+  if (is.null(coords)) coords <- c(centroid.poly(pol), 0)
+  if (is.null(norm)) norm <- c(0, 0, 1)
+  if (is.null(aproj)) aproj <- 1.0
+  
+  A <- area.poly(pol) / aproj
+
+  # Calculate the forces
+  F <- -p * A * norm
+
+  # Calculate the moments:
+
+  r <- coords
+
+  M <- c(r[2]*F[3] - r[3]*F[2],  r[3]*F[1] - r[1]*F[3],  r[1]*F[2] - r[2]*F[1])
+
+  return(c(F, M))
+    
+  
+
+  
+}
+
+  
+
 
 
 

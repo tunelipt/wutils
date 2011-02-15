@@ -68,7 +68,11 @@ centroid.poly <- function(p){
 
   A <- sapply(pts, function(p) polygonArea(p$x, p$y))
   C <- sapply(pts, function(p) polygonCentroid(p$x, p$y))
-
+  #hole <- sapply(pts, function(p) p$hole)
+  #fhole <- double(np)
+  #fhole[hole] <- -1
+  #fhloe[!hole] <- 1
+  
   xc <- sum(C[1,] * A) / sum(A)
   yc <- sum(C[2,] * A) / sum(A)
 
@@ -76,7 +80,7 @@ centroid.poly <- function(p){
 }
   
   
-forceFace <- function(p, pol, coords=NULL, norm=NULL, aproj=NULL){
+forcePolygon <- function(p, pol, coords=NULL, norm=NULL, aproj=NULL){
   if (is.null(coords)) coords <- c(centroid.poly(pol), 0)
   if (is.null(norm)) norm <- c(0, 0, 1)
   if (is.null(aproj)) aproj <- 1.0

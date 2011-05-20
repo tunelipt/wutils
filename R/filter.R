@@ -42,7 +42,31 @@ hpfilt <- function(x, freq, dt=NULL){
   return(xfilt)
 }
 
+bandfilt <- function(x, freq1, freq2, dt=NULL){
+  N <- length(x)
+  dtnull <- is.null(dt)
+  X <- fft(x)/N
 
+  if (dtnull) dt <- deltat(x)
+  period <- N*dt
+  df <- 1/period
+  f <- (0:(N-1))*df
+  nm1 <- N-1
+  nf1 <- freq1 %/% df
+  nf2 <- freq2 %/% df
+  faixa1 <- (nf1+2):(nf2)
+  faixa2 <- N-faixa1
+  
+  X[faixa1] <- 0.0
+  X[faixa2] <- 0.0
+
+  xfilt <- Re(fft(X, inv=TRUE))
+  if (dtnull) xfilt <- ts(xfilt, start=0, deltat=dt)
+  return(xfilt)
+}
+
+
+  
 integr <- function(x, p=1, dt=NULL){
 
   N <- length(x)

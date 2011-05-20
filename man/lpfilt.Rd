@@ -13,6 +13,7 @@ lpfilt(x, freq, dt=NULL)
 }
 \seealso{
   \code{\link{hpfilt}}
+  \code{\link{bandfilt}}
   \code{\link{ìntegr}}
 }
 \examples{

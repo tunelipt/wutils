@@ -18,7 +18,7 @@ fidContour <- function(x = seq(0, 1, length.out = nrow(z)),
                        labels = NULL,
                        vfont=NULL,  labcex = 0.6, drawlabels = TRUE, method = "flattest",
                        ccol = par("fg"), lty = par("lty"), lwd = par("lwd"),
-                       shapeFun=NULL, ...){
+                       shapeFun=NULL, plot.key=TRUE, ...){
 
 
   if (missing(z)) {
@@ -44,24 +44,26 @@ fidContour <- function(x = seq(0, 1, length.out = nrow(z)),
   mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
   on.exit(par(par.orig))
   w <- (3 + mar.orig[2L]) * par("csi") * 2.54
-  layout(matrix(c(2, 1), ncol = 2L), widths = c(1, lcm(w)))
-  par(las = las)
-  mar <- mar.orig
-  mar[4L] <- mar[2L]
-  mar[2L] <- 1
-  par(mar = mar)
-  plot.new()
-  plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
-              yaxs = "i")
-  rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
-  if (missing(key.axes)) {
-    if (axes) 
-      axis(4)
+  if (plot.key){
+    layout(matrix(c(2, 1), ncol = 2L), widths = c(1, lcm(w)))
+    par(las = las)
+    mar <- mar.orig
+    mar[4L] <- mar[2L]
+    mar[2L] <- 1
+    par(mar = mar)
+    plot.new()
+    plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
+                yaxs = "i")
+    rect(0, levels[-length(levels)], 1, levels[-1L], col = col)
+    if (missing(key.axes)) {
+      if (axes) 
+        axis(4)
+    }
+    else key.axes
+    box()
+    if (!missing(key.title)) 
+      key.title
   }
-  else key.axes
-  box()
-  if (!missing(key.title)) 
-    key.title
   mar <- mar.orig
   mar[4L] <- 1
   par(mar = mar)
@@ -108,5 +110,6 @@ makeCircleDrawer <- function(xc, yc, D, col=rgb(0,0,0,0.5))
 
     polygon(x, y, border=NA, col=col)
   }
+
 
 

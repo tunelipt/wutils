@@ -16,7 +16,7 @@ dotProduct <- function(u,v)
   return(sum(u*v))
 
 # Euclidean norm of a vector
-norm <- function(u)
+vnorm <- function(u)
   return(sqrt(dotProduct(u,u)))
 
 # Normal vector to a triangle
@@ -26,7 +26,7 @@ triNormal <- function(x, invert=FALSE){
 
   b <- crossProduct(u,v)
   s <- ifelse(invert, -1, 1)
-  return(s*b / norm(b))
+  return(s*b / vnorm(b))
 }
 
 # Determines the normal of a 3D polygon on a plane.
@@ -34,14 +34,14 @@ poly3dNorm <- function(p, eps=1e-5){
   np <- dim(p)[2]
   if (np<3) return(NULL)
 
-  l <- norm(p[,2]-p[1])
+  l <- vnorm(p[,2]-p[1])
 
   p1 <- p[,2]-p[,1]
 
   
   for (i in 3:np){
     cp <- crossProduct(p[,2]-p[,1], p[,i]-p[,1])
-    ll <- norm(cp)
+    ll <- vnorm(cp)
     if (ll > l*eps)
       return(cp/ll)
   }
@@ -69,27 +69,35 @@ poly3dArea <- function(p, n=NULL){
 
 
 # Projects a point p on a plane given by a normal n and a point p0.
-projectPoint <- function(p, n, p0=NULL){
+projectPoint <- function(p, n, p0=NULL, eps=1e-6){
 
   if (is.null(p0)) p0 <- double(3)
+  # Verify if p lies on the plane:
+  
+  ll <- p - p0
+  nl <- vnorm(ll)
+  lref <- max(nl, 1)
 
+  if (abs(dotProduct(ll, n)) < eps) return(p)
+  
+  
   A <- matrix(c(1, 0, 0, n[1],
                 0, 1, 0, n[2],
                 0, 0, 1, n[3],
                 n[1], n[2], n[3], 0), 4, 4, byrow=TRUE)
-  b <- c(p, 0)
+  b <- c(ll, 0)
   x <- solve(A, b)
 
-  return(x[1:3])
+  return(x[1:3]+p0)
 }
 
 
 
 generate2dCoords <- function(p){
 
-  x3 <- polyNorm3d(p)
+  x3 <- poly3dNorm(p)
   x1 <- p[,2] - p[,1]
-  x1 <- x1 / norm(x1)
+  x1 <- x1 / vnorm(x1)
 
   x2 <- crossProduct(x3, x1)
 

@@ -2,6 +2,16 @@ require(gpclib)
 require(deldir)
 
 voronoi <- function(x,y, xb=NULL, yb=NULL){
+  if (length(x)==1){
+    if (is.null(xb)) xb <- c(x-10, x+10)
+    if (is.null(yb)) yb <- c(y-10, y+10)
+
+    xx <- c(xb[1], xb[2], xb[2], xb[1])
+    yy <- c(yb[1], yb[1], yb[2], yb[2])
+
+    return(list(as(cbind(xx, yy), 'gpc.poly')))
+  }
+
   if (is.null(xb)){
     rx <- range(x)
     dx <-rx[2] - rx[1]
@@ -13,7 +23,9 @@ voronoi <- function(x,y, xb=NULL, yb=NULL){
     dy <-ry[2] - ry[1]
     yb <- c(ry[1] - 1.2*dy, ry[2] + 1.2*dy)
   }
-  
+
+
+    
   tri <- deldir(x,y, rw=c(xb[1], xb[2], yb[1], yb[2]))
 
   
@@ -43,7 +55,7 @@ polygonArea <- function(x, y, lam=1){
   x <- c(x, x[1])
   y <- c(y, y[1])
   area <- (x[1:n]*y[2:(n+1)] - x[2:(n+1)]*y[1:n])
-  area <- 0.5*abs(sum(area)) * lam^2
+  area <- 0.5*(sum(area)) * lam^2
   return(area)
   
 }

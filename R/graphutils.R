@@ -2,7 +2,7 @@
 
 
 
-getArrayLayout <- function(nfig, nrow=4, ncol=3, leg=TRUE, byrow=FALSE, leg.side=1, leg.len=0.15){
+getArrayLayout <- function(nfig, nrow=4, ncol=3, leg=TRUE, byrow=FALSE, leg.side=1, leg.len=0.2){
 
   nperpage <- ncol*nrow
   npages <- ifelse( nfig %% nperpage, nfig %/% nperpage + 1, nfig %/% nperpage)

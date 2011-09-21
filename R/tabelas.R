@@ -72,8 +72,11 @@ latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
 
   header <- rep(header, ncols)
   buildTable <- function(tab, page){
-    nr <- dim(page)[1]
-    nc <- dim(page)[2]
+    d <- dim(page)
+    if (is.null(d)) dim(page) <- c(length(page), 1)
+    d <- dim(page)
+    nr <- d[1]
+    nc <- d[2]
     ra <- nr
     ca <- nc
 

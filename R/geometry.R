@@ -30,11 +30,11 @@ triNormal <- function(x, invert=FALSE){
 }
 
 # Determines the normal of a 3D polygon on a plane.
-poly3dNorm <- function(p, eps=1e-5){
+poly3dNorm <- function(p, eps=1e-8){
   np <- dim(p)[2]
   if (np<3) return(NULL)
-
-  l <- vnorm(p[,2]-p[1])
+  ll <- c(max(p[1,]) - min(p[1,]), max(p[2,]) - min(p[2,]), max(p[3,])-min(p[3,]))
+  l <- vnorm(ll)
 
   p1 <- p[,2]-p[,1]
 

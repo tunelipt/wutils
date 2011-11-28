@@ -45,7 +45,7 @@ tableLayout <- function(nlines, ntabcols, ntablines, byrow=FALSE, fillbyrow=TRUE
     
 
 latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
-                         pos=NULL, dname=NULL){
+                         pos=NULL, dname=NULL, preamble=NULL){
 
   npages <- dim(tab.lay)[3]
   
@@ -103,6 +103,7 @@ latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
     con <- file(fname, open='w')
     wline(con, '\\begin{tabular}{', pos, '}')
     hline(con, 2)
+    if (!is.null(preamble)) wline(con, preamble)
     wline2(con, paste(header, collapse=' & '))
     if (!is.null(units)) wline2(con, paste(rep(units, 2), collapse=' & '))
     hline(con, 2)

@@ -21,8 +21,8 @@ vnorm <- function(u)
 
 # Normal vector to a triangle
 triNormal <- function(x, invert=FALSE){
-  u <- x[,3] - x[,1]
-  v <- x[,2] - x[,1]
+  u <- x[,2] - x[,1]
+  v <- x[,3] - x[,1]
 
   b <- crossProduct(u,v)
   s <- ifelse(invert, -1, 1)
@@ -45,7 +45,7 @@ poly3dNorm <- function(p, eps=1e-8){
     if (ll > l*eps)
       return(cp/ll)
   }
-  return(NULL)
+  return(c(0,0,0))
   
 }
 

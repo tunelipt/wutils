@@ -113,3 +113,31 @@ makeCircleDrawer <- function(xc, yc, D, col=rgb(0,0,0,0.5))
 
 
 
+makeColorFun <- function(xmin, xmax, n=100, palette=cfd.colors, underflow=NULL, overflow=NULL){
+  
+  cols <- palette(n)
+
+  if (is.null(underflow)) underflow = cols[1]
+  if (is.null(overflow)) overflow <- cols[n]
+
+  xx <- seq(xmin, xmax, len=n)
+
+  interp.fun <- approxfun(xx, 1:n)
+
+  fun <- function(x){
+    imin <- x<xmin
+    imax <- x>xmax
+    iother <- !imin & ! imax
+    xcol <- character(length(x))
+    dim(xcol) <- dim(x)
+    
+    xcol[imin] <- underflow
+    xcol[imax] <- overflow
+    xcol[iother] <- cols[round(interp.fun(x[iother]))]
+
+    return(xcol)
+  }
+
+  return(fun)
+}
+

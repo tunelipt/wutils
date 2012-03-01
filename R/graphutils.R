@@ -59,8 +59,13 @@ getArrayLayout <- function(nfig, nrow=4, ncol=3, leg=TRUE, byrow=FALSE, leg.side
 }
 
 
-arrayLayout <- function(page, lay, respect=FALSE)
-  layout(lay$matrix[,,page], widths=lay$widths, heights=lay$heights, respect=respect)
+arrayLayout <- function(page, lay, respect=FALSE){
+  mat <- lay$matrix[,,page]
+  dim(mat) <- dim(lay$matrix)[1:2]
+  
+  layout(mat, widths=lay$widths, heights=lay$heights, respect=respect)
+}
+
 
 legendWindow <- function(...){
 
@@ -120,10 +125,11 @@ makeColorFun <- function(xmin, xmax, n=100, palette=cfd.colors, underflow=NULL, 
 
 
 keyWindow <- function( levels, colors, side=4,
-                      border=NULL, mar=rep(0.2, 4), ...){
+                      border=NULL, mar=rep(0.2, 4), spc=1, barw=0.5, ...){
 
   par.keep <- par(no.readonly=TRUE)
   on.exit(par(par.keep))
+
   
   if (!is.null(mar)) par(mar=mar)
 
@@ -131,24 +137,25 @@ keyWindow <- function( levels, colors, side=4,
   zl <- 0:(n-1)
   zu <- 1:n
   z <- (zl + zu)/2
-
+  dz <- n/2*(1/spc - 1)
+  zlim <- c(-dz, n+dz)
   plot.new()
   if (side==1){
-    plot.window(xlim=c(0,n), ylim=c(0,2))
-    rect(zl, 1, zu, 2, col=colors, border=border)
-    text(z, 1, levels, pos=side, ...)
+    plot.window(xlim=zlim, ylim=c(0,1))
+    rect(zl, 1-barw, zu, 1, col=colors, border=border)
+    text(z, 1-barw, levels, pos=side, ...)
   }else if (side==2){
-    plot.window(ylim=c(0,n), xlim=c(0,2))
-    rect(1, zl, 2, zu, col=colors, border=border)
-    text(1,z, levels, pos=side, ...)
+    plot.window(ylim=zlim, xlim=c(0,1))
+    rect(1-barw, zl, 1, zu, col=colors, border=border)
+    text(1-barw,z, levels, pos=side, ...)
   }else if (side==3){
-    plot.window(xlim=c(0,n), ylim=c(0,2))
-    rect(zl, 0, zu, 1, col=colors, border=border)
-    text(z, 1, levels, pos=side, ...)
+    plot.window(xlim=zlim, ylim=c(0,1))
+    rect(zl, 0, zu, barw, col=colors, border=border)
+    text(z, barw, levels, pos=side, ...)
   }else{
-    plot.window(ylim=c(0,n), xlim=c(0,2))
-    rect(0, zl, 1, zu, col=colors, border=border)
-    text(1,z, levels, pos=side, ...)
+    plot.window(ylim=zlim, xlim=c(0,1))
+    rect(0, zl, barw, zu, col=colors, border=border)
+    text(barw,z, levels, pos=side, ...)
   }
 
 }

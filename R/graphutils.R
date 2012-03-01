@@ -88,3 +88,68 @@ arrayLayout.show <- function(lay, page){
 }
 
 
+makeColorFun <- function(xmin, xmax, n=100, palette=cfd.colors, underflow=NULL, overflow=NULL){
+  
+  cols <- palette(n)
+
+  if (is.null(underflow)) underflow = cols[1]
+  if (is.null(overflow)) overflow <- cols[n]
+
+  xx <- seq(xmin, xmax, len=n)
+
+  interp.fun <- approxfun(xx, 1:n)
+
+  fun <- function(x){
+    imin <- x<xmin
+    imax <- x>xmax
+    iother <- !imin & ! imax
+    xcol <- character(length(x))
+    dim(xcol) <- dim(x)
+    
+    xcol[imin] <- underflow
+    xcol[imax] <- overflow
+    xcol[iother] <- cols[round(interp.fun(x[iother]))]
+
+    return(xcol)
+  }
+
+  return(fun)
+}
+
+
+
+
+keyWindow <- function( levels, colors, side=4,
+                      border=NULL, mar=rep(0.2, 4), ...){
+
+  par.keep <- par(no.readonly=TRUE)
+  on.exit(par(par.keep))
+  
+  if (!is.null(mar)) par(mar=mar)
+
+  n <- length(levels)
+  zl <- 0:(n-1)
+  zu <- 1:n
+  z <- (zl + zu)/2
+
+  plot.new()
+  if (side==1){
+    plot.window(xlim=c(0,n), ylim=c(0,2))
+    rect(zl, 1, zu, 2, col=colors, border=border)
+    text(z, 1, levels, pos=side, ...)
+  }else if (side==2){
+    plot.window(ylim=c(0,n), xlim=c(0,2))
+    rect(1, zl, 2, zu, col=colors, border=border)
+    text(1,z, levels, pos=side, ...)
+  }else if (side==3){
+    plot.window(xlim=c(0,n), ylim=c(0,2))
+    rect(zl, 0, zu, 1, col=colors, border=border)
+    text(z, 1, levels, pos=side, ...)
+  }else{
+    plot.window(ylim=c(0,n), xlim=c(0,2))
+    rect(0, zl, 1, zu, col=colors, border=border)
+    text(1,z, levels, pos=side, ...)
+  }
+
+}
+  

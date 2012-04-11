@@ -85,25 +85,54 @@ powerProfileFit <- function(z,u, zref=1){
 }
 
 
-calcLogProfile <- function(z,u, k=0.4){
+chooseFitSection <- function(x, y, v=NULL, h=NULL, ...){
+  plot(x, y, ty='p', ...)
 
-  plot(u, z, log='y')
-  pts <- range(identify(u,z))
-  r <- pts[1]:pts[2]
-  uu <- u[r]
-  zz <- z[r]
+  if (!is.null(v)) abline(v=v)
+  if (!is.null(h)) abline(h=h)
 
-  return(logProfileFit(zz,uu, k))
+  return(range(identify(x,y)))
 }
 
-calcPowerProfile <- function(z,u, zref=1){
+calcLogProfile <- function(z,u, k=0.4, return.fun=FALSE, ...){
 
-  plot(u, z, log='xy')
-  pts <- range(identify(u,z))
+  
+  plot(u, z, log='y')
+  pts <- chooseFitSection(u,z, log='y', xlab='Velocity', ylab='Height', ...)
+  #pts <- range(identify(u,z))
   r <- pts[1]:pts[2]
   uu <- u[r]
   zz <- z[r]
 
-  return(powerProfileFit(zz,uu, zref))
+  f <- logProfileFit(zz,uu, k)
+  fun <- function(z) f[2]/k * log(z/f[1])
+  
+  lines(fun(z), z)
+  lines(fun(zz), zz, col='red', lwd=3)
+  if (return.fun)
+    return(fun) 
+  else
+    return(f)
+}
+
+calcPowerProfile <- function(z,u, zref=1, return.fun=FALSE, ...){
+
+  plot(u, z, log='xy')
+  pts <- chooseFitSection(u,z, log='xy', xlab='Velocity', ylab='Height', ...)
+  #pts <- range(identify(u,z))
+  r <- pts[1]:pts[2]
+  uu <- u[r]
+  zz <- z[r]
+
+  f <- powerProfileFit(zz,uu, zref)
+  fun <- function(z) f[2]*(z/zref)**f[1]
+    
+  lines(fun(z), z)
+  lines(fun(zz), zz, col='red', lwd=3)
+  if (return.fun)
+    return(fun) 
+  else
+    return(f)
+  return(f)
 }
 

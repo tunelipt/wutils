@@ -103,9 +103,9 @@ latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
     con <- file(fname, open='w')
     wline(con, '\\begin{tabular}{', pos, '}')
     hline(con, 2)
-    if (!is.null(preamble)) wline(con, preamble)
+    if (!is.null(preamble)) wline2(con, preamble)
     wline2(con, paste(header, collapse=' & '))
-    if (!is.null(units)) wline2(con, paste(rep(units, 2), collapse=' & '))
+    if (!is.null(units)) wline2(con, paste(rep(units, ncols), collapse=' & '))
     hline(con, 2)
     write.table(buildTable(tab, tab.lay[,,i]), file=con, quote=FALSE, sep=' & ', eol='\\\\\n',
                 row.names=FALSE, col.names=FALSE)

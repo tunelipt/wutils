@@ -89,7 +89,7 @@ parseZHeader <- function(zheader, header){
 readTecplot <- function(fname){
 
   f <- file(fname, open='r')
-
+  
   repeat{
     line <- readLines(f,n=1)
     m <- grep("^[ ]*VARIABLES[ ]*=", line)
@@ -110,6 +110,35 @@ readTecplot <- function(fname){
   close(f)
 
   return(zone)
+}
+
+readTecplotMZ <- function(fname){
+
+  f <- file(fname, open='r')
+  on.exit(close(f))
+
+  repeat{
+    line <- readLines(f,n=1)
+    m <- grep("^[ ]*VARIABLES[ ]*=", line)
+    if (length(m) != 0) break
+  }
+
+  vars <- parseHeader(line)
+  zlst <- list()
+  zc <- 0
+  while(TRUE){
+    repeat{
+      line <- readLines(f, n=1)
+      if (length(line)==0) return(zlst)
+      m <- grep("^[ ]*ZONE", line)
+      if (length(m) != 0) break
+    }
+    zc <- zc + 1
+    readZone <- parseZHeader(line, vars)
+    
+    zlst[[zc]] <- readZone(f)
+  }
+  return(zlst)
 }
 
 transfTec <- function(d){

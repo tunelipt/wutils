@@ -125,4 +125,34 @@ basename2 <- function(path, ext=NULL){
 }
 
 
+#' Sort strings with numbers using the numbers as sorting elements.
+#'
+#' Often a sequence of strings contain a numbers and it is necessary
+#' to sort these strings according to these numbers and not alphabetically.
+#'
+#' @param x Strings to be sorted containing at least one integer group.
+#' @param decreasing Sort the sequence in decreasing order?
+#' @param index.return Return the indexes of the sorted vector?
+#' @return Sorted vector or, depending on argument \code{index.return} index.
+#' @export
+sortNum <- function(x, decreasing=FALSE, index.return=FALSE){
+
+  m <- regexpr('[0-9]+([^0-9]+)?$', x)
+  
+  ms <- as.integer(m)
+  xx <- substring(x, ms)
+  m <- regexpr('[0-9]+', xx)
+  ml <- attr(m, 'match.length')
+  
+  xx <- as.integer(substr(xx, 1, ml))
+
+  ix <- sort(xx, decreasing=decreasing, index.return=TRUE)$ix
+
+
+  if (index.return)
+    return(list(x=x[ix], ix=ix))
+  else
+    return(x[ix])
+}
+
 

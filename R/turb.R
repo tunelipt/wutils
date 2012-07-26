@@ -94,11 +94,12 @@ chooseFitSection <- function(x, y, v=NULL, h=NULL, ...){
   return(range(identify(x,y)))
 }
 
-calcLogProfile <- function(z,u, k=0.4, return.fun=FALSE, ...){
+calcLogProfile <- function(z,u, k=0.4, return.fun=FALSE, v=NULL, h=NULL,...){
 
   
   plot(u, z, log='y')
-  pts <- chooseFitSection(u,z, log='y', xlab='Velocity', ylab='Height', ...)
+  pts <- chooseFitSection(u,z, log='y', xlab='Velocity', ylab='Height', v=v,
+                          h=h, ...)
   #pts <- range(identify(u,z))
   r <- pts[1]:pts[2]
   uu <- u[r]

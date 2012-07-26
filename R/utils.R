@@ -156,3 +156,21 @@ sortNum <- function(x, decreasing=FALSE, index.return=FALSE){
 }
 
 
+#' A more specific case of \code{\link{rep}}.
+#'
+#' This function is used to create e vector of repeating elements
+#' where the number of times each number is repeated can be
+#' specified independently.
+#'
+#' @param x Vector with elements that should be repeated.
+#' @param r Vector of the same size as \code{x} specifiying how many times each element should be repeated.
+#' @return Vector with repeated elements.
+#' @export
+rep2 <- function(x, r){
+
+  y <- vector()
+  nx <- length(x)
+  for (i in 1:nx)
+    y <- c(y, rep(x[i], r[i]))
+  return(y)
+}

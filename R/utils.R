@@ -1,4 +1,15 @@
-
+#' Displays a Yes/No prompt.
+#'
+#' Simple function for interactive input.
+#' This function displays a prompt that await a Yes/No reply.
+#' If the optional argument \coide{pt} is TRUE, the function
+#' expects S/N (portuguese).
+#'
+#' @param msh Prompt to be displayed.
+#' @param pt Use portuguese?
+#' @return TRUE -> YES, FALSE-> NO.
+#' @export
+#'
 msgYesNo <- function(msg='', pt=FALSE){
   if (pt){
     y<-'S'
@@ -174,3 +185,37 @@ rep2 <- function(x, r){
     y <- c(y, rep(x[i], r[i]))
   return(y)
 }
+
+idfun <- function(x) x
+
+#' Joins elements of a list according to some criteria.
+#'
+#' This function is a flexible version of rbind, cbind c.
+#' Its binds together every elements
+bindList <- function(lst, bindfun=rbind, fun=NULL, recursive=0){
+  
+  
+  if (recursive > 0 || is.null(fun))
+    localfun <- idfun
+  else
+    localfun <- fun
+  
+  n <- length(lst)
+  if (recursive==0){
+    x <- localfun(lst[[1]])
+    if (n>1)
+      for (i in 2:n)
+        x <- bindfun(x, localfun(lst[[i]]))
+  }else{
+    x <- bindList(lapply(lst, bindList, bindfun=bindfun, fun=fun,
+                         recursive=recursive-1), bindfun, NULL, 0)
+  }
+  return(x)
+}
+
+
+bindArgs <- function(..., bindfun=rbind, fun=NULL, recursive=0)
+  bindList(list(...), bindfun=bindfun, fun=fun, recursive=recursive)
+
+
+  

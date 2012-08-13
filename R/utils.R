@@ -9,7 +9,7 @@
 #' @param pt Use portuguese?
 #' @return TRUE -> YES, FALSE-> NO.
 #' @export
-#'
+#' @example
 msgYesNo <- function(msg='', pt=FALSE){
   if (pt){
     y<-'S'

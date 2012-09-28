@@ -1,23 +1,18 @@
-require(wutils)
-clen <- 100
-myrain <- col2rgb(cfd.colors(clen))
-mygray <- seq(0.02, 0.96, len=clen)
-getindex <- function(x){
-  dr <- x[1] - myrain[1,]
-  dg <- x[2] - myrain[2,]
-  db <- x[3] - myrain[3,]
-  dd <- abs(dr) + abs(dg) + abs(db)
-  ii <- which.min(dd)
-  if (dd[ii] > 20) return(0)
-  return(ii)
-}
+require(png) 
+
+col2gray <- function(img, tol=20, clen=100, myrain=col2rgb(cfd.colors(clen))){
 
 
-                      
-  
-  
+  getindex <- function(x){
+    dr <- x[1] - myrain[1,]
+    dg <- x[2] - myrain[2,]
+    db <- x[3] - myrain[3,]
+    dd <- abs(dr) + abs(dg) + abs(db)
+    ii <- which.min(dd)
+    if (dd[ii] > tol) return(0)
+    return(ii)
+  }
 
-col2gray <- function(img){
 
   d <- dim(img)
   g <- matrix(NA, nr=d[1], nc=d[2])
@@ -29,10 +24,11 @@ col2gray <- function(img){
 }
 
 
-convert <- function(img){
+convert <- function(img, tol=20, clen=100, myrain=col2rgb(cfd.colors(clen)),
+                    mygray=seq(0.02, 0.96, len=clen)){
 
   cat("Calculating gray scale...\n")
-  idx <- col2gray(img*255)
+  idx <- col2gray(img*255,tol, clen,  myrain)
 
   cat("Generating new image...\n")
 
@@ -64,10 +60,14 @@ convert <- function(img){
 }
 
 
-convertFile <- function(ipng, opng){
+convertFile <- function(ipng, opng, tol=20, clen=100, color.palette=cfd.colors,
+                        glim=c(0.02, 0.96)){
+
+  myrain <- col2rgb(color.palette(clen))
+  mygray <- seq(min(glim), max(glim), len=clen)
 
   img <- readPNG(ipng)
-  img <- convert(img)
+  img <- convert(img, tol, clen, myrain, mygray)
 
   writePNG(img, opng)
 

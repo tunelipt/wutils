@@ -4,6 +4,6 @@ Date: 2012-02-03
 Title: Useful functions for data processing in a wind tunnel
 Author: Paulo J. S. Jabardo <pjabardo@gipt.br>
 Maintainer: Paulo J. S. Jabardo <pjabardo@gipt.br>
-Depends: R (>= 2.8.0)
+Depends: R (>= 2.8.0), png
 Description: Provides functions that are useful when processing data acquired in the wind tunnel. 
 License: GPL (>= 3)

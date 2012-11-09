@@ -119,10 +119,56 @@ logFit <- function(x,y){
   fit <- as.vector(lm(y ~ lnx)[[1]])
   return(fit)
 }
+
+
+#' Create function that calculates the log fit.
+#'
+#' Returns a function that computes the fitted log function of
+#'  a set of points using \code{\link{logFit}}.
+#' @param x Vector containing x coordinates of the points.
+#' @param y Vector containing y coordinates of the points.
+#' @return Function that uses the fit parameters to estimate y.
+#' @seealso   \code{\link{logFit}}
+#' @examples
+#' x <- 1:10
+#' y <- 3*log(x) + 1 + rnorm(10, sd=0.2)
+#'
+#' fitfun <- logFitFun(x, y)
+#' plot(x, y, xlab='x', ylab='y')
+#' lines(x, fitfun(x))
+#' @export
 logFitFun <- function(x,y){
   f <- logFit(x,y)
   return(function(x)f[1] + f[2]*log(x))
 }
+
+
+#' Fit a log velocity profile.
+#'
+#' Calculates the log fit of a velocity profile using \code{\link{logFit}}.
+#'
+#' This function calculates the the parameters of a velocity profile according
+#' to the law of the wall:
+#' \deqn{\frac{u}{u_*} = \frac{1}{\kappa} \ln \frac{z}{z_0}}{u/u* = 1/k * ln(z/z0)}
+#' This function returnd u* (us) and z0 given k (usually 0.4 or 0.41).
+#'
+#' @param z Vector containing the heights of the boundary layer.
+#' @param u Vector containing the velocities of the boundary layer.
+#' @param k Von Karman constant.
+#' @return Vector \code{c(z0,us)}
+#' @seealso \code{\link{logFit}}
+#' @examples
+#' z <- seq(5, 300, by=5)
+#' k <- 0.4
+#' z0 <- 2
+#' us <- 0.5
+#' u <- 1/k * log(z/z0) + rnorm(10, sd=0.2)
+#' 
+#' fit <- logProfileFit(z, u)
+#' plot(u, z, xlab='Height (mm)', ylab='Velocity (m/s)', ty='b')
+#' lines(fit['us']/k * log(z/fit['z0']), z)
+#' print(fit)
+#' @export
 logProfileFit <- function(z,u, k=0.4){
 
   f <- logFit(z,u)

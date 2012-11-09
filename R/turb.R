@@ -26,7 +26,7 @@
 #' @param verbose Print calculation info?
 #' @return Integral length scale.
 #' @seealso \code{\link{spec.pgram}  \code{\link{lm}} 
-#' @authot Paulo José Saiz Jabardo <pjabardo@ipt.br>
+#' @author Paulo José Saiz Jabardo <pjabardo@ipt.br>
 #' @export
 integralScale <- function(u, spans=NULL, nn=NULL, degree=4, plt=FALSE, verbose=TRUE){
 
@@ -66,11 +66,54 @@ integralScale <- function(u, spans=NULL, nn=NULL, degree=4, plt=FALSE, verbose=T
 }
 
 
+#' Linear regression.
+#'
+#' Calculates the linear fit of a set of points using \code{\link{lm}}.
+#' This function returns the coefficients that best approximate the
+#' set of points according to the equation 
+#' \deqn{y = a_1 + a_2\cdot x}{y = a1 + a2*x}
+#' The function returns the vector \code{c(a1, a2)}.
+#'
+#' @param x Vector containing x coordinates of the points.
+#' @param y Vector containing y coordinates of the points.
+#' @return Vector with fit coefficients.
+#' @seealso   \code{\link{lm}}  \code{\link{predict.lm}}
+#' @author Paulo José Saiz Jabardo <pjabardo@ipt.br>
+#' @examples
+#' x <- 1:10
+#' y <- 2*x + rnorm(10, sd=0.4)
+#' fit <- linearFit(x, y)
+#' plot(x, y, xlab='x', ylab='y')
+#' lines(x, fit[1] + fit[2]*x)
+#' print(fit)
+#' @export
 linearFit <- function(x,y){
   fit <- as.vector(lm(y ~ x)[[1]])
   return(fit)
 }
 
+#' Log fit
+#'
+#' Calculates the log fit of a set of points using \code{\link{lm}}.
+#' This function returns the coefficients that best approximate the
+#' set of points according to the equation 
+#' \deqn{y = a_1 + a_2\cdot \log x}{y = a1 + a2*log(x)}
+#' The function returns the vector \code{c(a1, a2)}.
+#'
+#' @param x Vector containing x coordinates of the points.
+#' @param y Vector containing y coordinates of the points.
+#' @return Vector with fit coefficients.
+#' @seealso   \code{\link{lm}}  \code{\link{predict.lm}}
+#' @author Paulo José Saiz Jabardo <pjabardo@ipt.br>
+#' @examples
+#' x <- 1:10
+#' y <- 3*log(x) + 1 + rnorm(10, sd=0.2)
+#'
+#' fit <- logFit(x, y)
+#'plot(x, y, xlab='x', ylab='y')
+#' lines(x, fit[1] + fit[2]*log(x))
+#' print(fit)#' x <- 1:10
+#' @export
 logFit <- function(x,y){
 
   lnx <- log(x)

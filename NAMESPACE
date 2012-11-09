@@ -1,4 +1,7 @@
 export(calcdx)
+export(calcLogProfile)
+export(calcPowerProfile)
+export(chooseFitSection)
 export(integralScale)
 export(linearFit)
 export(logFit)

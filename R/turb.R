@@ -265,7 +265,33 @@ powerProfileFit <- function(z,u, zref=1){
   return(c(p=b, u=uref))
 }
 
-
+#' Grafically choose a section of a graph.
+#'
+#' Plots a graph and prompts user to choose, by clicking points
+#' with the mouse, the most appropriate section.
+#'
+#' After measuring a velocity profile, important parameters can be calculated from
+#' this profile. However, the behavior of a boundary layer changes along its width
+#' and to calculate those parameters (such as z0) the correct region of the boundary
+#' layer should be chosen. This function plots the velocity profile and prompts the user
+#' to select the interesting region.
+#'
+#' @param x X coordinate of the points.
+#' @param y Y coordinate of the points.
+#' @param v Position where vertical lines, if any, should be plotted.
+#' @param h Position where horizontal lines, if any, should be plotted.
+#' @param ... Other parameters to \code{\link{plot}} function, usually log='...' is used.
+#' @return Range of the indices inside the chosen region.
+#' @seealso \code{\link{identify}}
+#' @examples
+#' z <- seq(5, 300, by=5)
+#' k <- 0.4
+#' z0 <- 2
+#' us <- 0.5
+#' u <- 1/k * log(z/z0) + rnorm(10, sd=0.2)
+#' idx <- chooseFitSection(u, z, log='xy')
+#' lines(u[idx], z[idx], lwd=2, col='red')
+#' @export
 chooseFitSection <- function(x, y, v=NULL, h=NULL, ...){
   plot(x, y, ty='p', ...)
 
@@ -275,6 +301,42 @@ chooseFitSection <- function(x, y, v=NULL, h=NULL, ...){
   return(range(identify(x,y)))
 }
 
+#' Interactively fit of the law of the wall on measured velocity profile.
+#'
+#' Calculates the law of the wall that best fits to a velocity profile using
+#' \code{\link{logProfileFit}}.
+#'
+#'  A measured velocity profile is usually not entirely a log layer. Near
+#'  the ground (or within the roughness elements) or near the top of the
+#'  boundary layer the  velocity profile  deviates from the law of the wall
+#'  and therefore the applicable portion of the velocity profile
+#'  should be specified. This function is a wrapper around
+#'  \code{\link{logProfileFit}} where the velocity profile is plotted on
+#'  a log-linear axis so that the law of the wall  section is easily found. The
+#'  user then specifies the section where the law of the wall is applicable and
+#'  uses this section to compute the profile characteristics.
+#'
+#' @param z Heights of velocity measurements.
+#' @param u Velocity measurements.
+#' @param k Von Karman constant.
+#' @param return.fun Return fit parameters or a function that calculates the velocity?
+#' @param v Any vertical lines that should be plotted.
+#' @param h Any horizontal lines that should be plotted.
+#' @param ... Any parameters that shoud be passed along to \code{\link{chooseFitSection}}.
+#' @return Fit parameters or function depending on argument \code{return.fun}.
+#' @seealso \code{\link{logProfileFit}} \code{\link{logFitFun}} \code{\link{powerFitFun}}
+#' @examples
+#' z <- seq(5, 300, by=5)
+#' k <- 0.4
+#' z0 <- 2
+#' us <- 0.5
+#' u <- 1/k * log(z/z0) + rnorm(10, sd=0.2)
+#' 
+#' fit <- calcLogProfile(z, u)
+#' plot(u, z, xlab='Height (mm)', ylab='Velocity (m/s)', ty='b')
+#' lines(fit['us']/k * log(z/fit['z0']), z)
+#' print(fit)
+#' @export
 calcLogProfile <- function(z,u, k=0.4, return.fun=FALSE, v=NULL, h=NULL,...){
 
   
@@ -297,10 +359,44 @@ calcLogProfile <- function(z,u, k=0.4, return.fun=FALSE, v=NULL, h=NULL,...){
     return(f)
 }
 
-calcPowerProfile <- function(z,u, zref=1, return.fun=FALSE, ...){
+#' Interactively fit a power law on measured velocity profile.
+#'
+#' Calculates the law of the wall that best fits to a velocity profile using
+#' \code{\link{powerProfileFit}}.
+#'
+#'  A measured velocity profile is usually not entirely a power law. Near
+#'  the ground (or within the roughness elements) or near the top of the
+#'  boundary layer the  velocity profile  deviates from the power law
+#'  and therefore the applicable portion of the velocity profile
+#'  should be specified. This function is a wrapper around
+#'  \code{\link{powerProfileFit}} where the velocity profile is plotted on
+#'  a log-log graph so that the power law  section is easily identifiable. The
+#'  user then specifies the section where the law of the wall is applicable and
+#'  uses this section to compute the profile characteristics.
+#'
+#' @param z Heights of velocity measurements.
+#' @param u Velocity measurements.
+#' @param zref Reference height.
+#' @param return.fun Return fit parameters or a function that calculates the velocity?
+#' @param v Any vertical lines that should be plotted.
+#' @param h Any horizontal lines that should be plotted.
+#' @param ... Any parameters that shoud be passed along to \code{\link{chooseFitSection}}.
+#' @return Fit parameters or function depending on argument \code{return.fun}.
+#' @seealso \code{\link{logProfileFit}} \code{\link{logFitFun}} \code{\link{powerFitFun}}
+#' @examples
+#' z <- seq(10, 400, by=10)
+#' zref <- 300
+#' u <- 10*(z/zref)^0.2 + rnorm(10, sd=0.2)
+#' 
+#' fit <- calcPowerProfile(z,u,zref=300)
+#' plot(u, z, xlab='Velocity (m/s)', ylab='Height (mm)')
+#' lines(fit['u']*(z/zref)^fit['p'], z)
+#' print(fit)
+#' @export
+calcPowerProfile <- function(z,u, zref=1, return.fun=FALSE, v=NULL, h=NULL, ...){
 
   plot(u, z, log='xy')
-  pts <- chooseFitSection(u,z, log='xy', xlab='Velocity', ylab='Height', ...)
+  pts <- chooseFitSection(u,z, log='xy', xlab='Velocity', ylab='Height', v=v, h=h, ...)
   #pts <- range(identify(u,z))
   r <- pts[1]:pts[2]
   uu <- u[r]

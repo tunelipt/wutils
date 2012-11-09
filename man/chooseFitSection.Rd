@@ -1,0 +1,49 @@
+\name{chooseFitSection}
+\alias{chooseFitSection}
+\title{Grafically choose a section of a graph.}
+\usage{
+  chooseFitSection(x, y, v = NULL, h = NULL, ...)
+}
+\arguments{
+  \item{x}{X coordinate of the points.}
+
+  \item{y}{Y coordinate of the points.}
+
+  \item{v}{Position where vertical lines, if any, should be
+  plotted.}
+
+  \item{h}{Position where horizontal lines, if any, should
+  be plotted.}
+
+  \item{...}{Other parameters to \code{\link{plot}}
+  function, usually log='...' is used.}
+}
+\value{
+  Range of the indices inside the chosen region.
+}
+\description{
+  Plots a graph and prompts user to choose, by clicking
+  points with the mouse, the most appropriate section.
+}
+\details{
+  After measuring a velocity profile, important parameters
+  can be calculated from this profile. However, the
+  behavior of a boundary layer changes along its width and
+  to calculate those parameters (such as z0) the correct
+  region of the boundary layer should be chosen. This
+  function plots the velocity profile and prompts the user
+  to select the interesting region.
+}
+\examples{
+z <- seq(5, 300, by=5)
+k <- 0.4
+z0 <- 2
+us <- 0.5
+u <- 1/k * log(z/z0) + rnorm(10, sd=0.2)
+idx <- chooseFitSection(u, z, log='xy')
+lines(u[idx], z[idx], lwd=2, col='red')
+}
+\seealso{
+  \code{\link{identify}}
+}
+

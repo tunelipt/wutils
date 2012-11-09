@@ -93,6 +93,7 @@ linearFit <- function(x,y){
 #' Log fit
 #'
 #' Calculates the log fit of a set of points using \code{\link{lm}}.
+#'
 #' This function returns the coefficients that best approximate the
 #' set of points according to the equation 
 #' \deqn{y = a_1 + a_2\cdot \log x}{y = a1 + a2*log(x)}
@@ -125,6 +126,7 @@ logFit <- function(x,y){
 #'
 #' Returns a function that computes the fitted log function of
 #'  a set of points using \code{\link{logFit}}.
+#'
 #' @param x Vector containing x coordinates of the points.
 #' @param y Vector containing y coordinates of the points.
 #' @return Function that uses the fit parameters to estimate y.
@@ -178,6 +180,29 @@ logProfileFit <- function(z,u, k=0.4){
   return(c(z0=z0, us=us))
 }
 
+#' Power fit
+#'
+#' Calculates the log fit of a set of points using \code{\link{lm}}.
+#'
+#' This function returns the coefficients that best approximate the
+#' set of points according to the equation 
+#' \deqn{y = a_1 x^a_2} 
+#' The function returns the vector \code{c(a1, a2)}.
+#'
+#' @param x Vector containing x coordinates of the points.
+#' @param y Vector containing y coordinates of the points.
+#' @return Vector with fit coefficients.
+#' @seealso   \code{\link{lm}}  \code{\link{predict.lm}}
+#' @author Paulo José Saiz Jabardo.
+#' @examples
+#' x <- 1:10
+#' y <- 2.5 * x^0.3 + rnorm(10, sd=0.2)
+#' 
+#' fit <- powerFit(x, y)
+#' plot(x, y, xlab='x', ylab='y')
+#' lines(x, fit[1]*x^fit[2])
+#' print(fit)
+#' @export
 powerFit <- function(x,y){
 
   lnx <- log(x)
@@ -189,11 +214,48 @@ powerFit <- function(x,y){
   return(c(a=a, b=b))
 }
 
+#' Create function that calculates the power fit.
+#'
+#' Returns a function that computes the fitted log function of
+#'  a set of points using \code{\link{powerFit}}.
+#'
+#' @param x Vector containing x coordinates of the points.
+#' @param y Vector containing y coordinates of the points.
+#' @return Function that uses the fit parameters to estimate y.
+#' @seealso   \code{\link{powerFit}}
+#' @examples
+#' x <- 1:10
+#' y <- 2.5 * x^0.3 + rnorm(10, sd=0.2)
+#' 
+#' fitfun <- powerFitFun(x, y)
+#' plot(x, y, xlab='x', ylab='y')
+#' lines(x, fitfun(x))
+#' @export
 powerFitFun <- function(x,y){
   fit <- powerFit(x,y)
   return(function(x) fit[1]*x^fit[2])
 }
 
+#' Fit a velocity profile to a power law.
+#'
+#' Uses the function \code{\link{powerFit}} to find the parameters
+#' of the power law velocity profile:
+#' \deqn{u/uref = (z/zref)^p}
+#'
+#' @param z Heights were the velocity was measured.
+#' @param u Velocity measured.
+#' @param zref Reference height.
+#' @return Vector \code{c(p, uref)}.
+#' @examples
+#' z <- seq(10, 400, by=10)
+#' zref <- 300
+#' u <- 10*(z/zref)^0.2 + rnorm(10, sd=0.2)
+#' 
+#' fit <- powerProfileFit(z,u,zref=300)
+#' plot(u, z, xlab='Velocity (m/s)', ylab='Height (mm)')
+#' lines(fit['u']*(z/zref)^fit['p'], z)
+#' print(fit)
+#' @export
 powerProfileFit <- function(z,u, zref=1){
   z <- z/zref
   fit <- as.double(powerFit(z,u))

@@ -1,19 +1,23 @@
 \name{powerProfileFit}
 \alias{powerProfileFit}
-\title{Power law fitting specific for velocity profiles}
-\description{Calculates the poewr fit to a velocity profile using \code{\link{powerFit}}.}
+\title{Fit a velocity profile to a power law.}
 \usage{
-powerProfileFit(z,u,zref=1)
+  powerProfileFit(z, u, zref = 1)
 }
 \arguments{
-  \item{z}{Heights of velocity measurements.}
-  \item{u}{Velocity measurements.}
+  \item{z}{Heights were the velocity was measured.}
+
+  \item{u}{Velocity measured.}
+
   \item{zref}{Reference height.}
 }
-\seealso{
-  \code{\link{powerFit}}
-  \code{\link{logProfileFit}}
-  \code{\link{powerFitFun}}
+\value{
+  Vector \code{c(p, uref)}.
+}
+\description{
+  Uses the function \code{\link{powerFit}} to find the
+  parameters of the power law velocity profile:
+  \deqn{u/uref = (z/zref)^p}
 }
 \examples{
 z <- seq(10, 400, by=10)
@@ -25,3 +29,4 @@ plot(u, z, xlab='Velocity (m/s)', ylab='Height (mm)')
 lines(fit['u']*(z/zref)^fit['p'], z)
 print(fit)
 }
+

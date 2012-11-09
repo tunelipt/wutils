@@ -1,17 +1,20 @@
 \name{powerFitFun}
 \alias{powerFitFun}
-\title{Power law fitting}
-\description{Creates a function that calculates  the power fit of a set of points using \code{\link{powerFit}}.}
+\title{Create function that calculates the power fit.}
 \usage{
-powerFitFun(x, y)
+  powerFitFun(x, y)
 }
 \arguments{
-  \item{x}{Vector containing x coordinates of the points}
-  \item{y}{Vector containing y coordinates of the points}
+  \item{x}{Vector containing x coordinates of the points.}
+
+  \item{y}{Vector containing y coordinates of the points.}
 }
-\seealso{
-  \code{\link{powerFit}}
-  \code{\link{logFitFun}}
+\value{
+  Function that uses the fit parameters to estimate y.
+}
+\description{
+  Returns a function that computes the fitted log function
+  of a set of points using \code{\link{powerFit}}.
 }
 \examples{
 x <- 1:10
@@ -21,3 +24,7 @@ fitfun <- powerFitFun(x, y)
 plot(x, y, xlab='x', ylab='y')
 lines(x, fitfun(x))
 }
+\seealso{
+  \code{\link{powerFit}}
+}
+

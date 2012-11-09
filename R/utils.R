@@ -8,13 +8,12 @@
 #' @param msh Prompt to be displayed before asking Y/N.
 #' @param pt Use portuguese?
 #' @return TRUE (YES), FALSE (NO).
-#' @export
 #' @examples
 #' ans <- msgYesNo("Sim ou Não", pt=TRUE)
 #' print(ans)
 #' ans <- msgYesNo("Yes or No")
 #' print(ans)
-#'
+#' @export
 msgYesNo <- function(msg='', pt=FALSE){
   if (pt){
     y<-'S'
@@ -34,7 +33,19 @@ msgYesNo <- function(msg='', pt=FALSE){
 
   return(ifelse(ans==y, TRUE, FALSE))
 }
-
+#' Simple menu input.
+#'
+#' Implements a simple menu were user can choose one of
+#' several options.
+#' @param choices Menu options.
+#' @param title Title to be displayed in the menu.
+#' @param pt Use portuguese on prompt?
+#' @return Index of the chose option.
+#' @seealso \code{\link{msgYesNo}}
+#' @examples
+#' ans <- mymenu(c("One", "Two", "Three"), "Select an option")
+#' print(ans)
+#' @export
 mymenu <- function(choices, title="", pt=FALSE){
   if (pt)
     question <- "Escolha: "
@@ -52,17 +63,73 @@ mymenu <- function(choices, title="", pt=FALSE){
   }
 }
 
+#' String trimming.
+#'
+#' Trims whitespace off the ends of strings.
+#'
+#' \code{rtrim} trims the right end of the string,
+#' \code{ltrim} trims the left end of the string and
+#' \code{trim} trims both ends of the string.
+#'
+#' @param s Character array to be trimmed.
+#' @param chars Characters to be trimmed.
+#' @return Trimmed version of the character array.
+#' @seealso \code{\link{sub}}
+#' @examples
+#' s <- "   garbagexxxx"
+#' print(rtrim(s))
+#' print(rtrim(s, 'x'))
+#' print(ltrim(s))
+#' print(ltrim(s, 'x'))
+#' print(trim(s))
+#' print(trim(s,'x'))
+#' print(trim(s,' x'))
+#' @aliases rtrim ltrim trim
+#' @export
 rtrim <- function(s, chars=" \n\t\r"){
   pattern <- paste('[', chars, ']+$', sep='')
   sub(pattern, "", s)
 }
+
+#' @rdname rtrim
+#' @export
 ltrim <- function(s, chars=" \n\t\r"){
   pattern <- paste('^[', chars, ']+', sep='')
   sub(pattern, "", s)
 }
+
+
+#' @rdname rtrim
+#' @export
 trim <- function(s, chars=' \n\t\r')
   ltrim(rtrim(s, chars), chars)
 
+
+#' Is the string a number?
+#'
+#' Determines whether a string is a number (or integer)?.
+#'
+#'  \code{isStrInt} determines whether a string is a integer. 
+#'  \code{isStrNum} determines whether a string is a number.
+#'
+#' @param s Character array.
+#' @param dec Decimal point separator.
+#' @return TRUE if input is a integer/number FALSE otherwise.
+#' @examples
+#' s <- "XYZ"
+#' print(isStrInt(s))
+#' print(isStrNum(s))
+#' s <- "-123"
+#' print(isStrInt(s))
+#' print(isStrNum(s))
+#' s <- "-123.234"
+#' print(isStrInt(s))
+#' print(isStrNum(s))
+#' s <- "1e4"
+#' print(isStrInt(s))
+#' print(isStrNum(s))
+#' @aliases isStrInt isStrNum
+#' @export
 isStrInt <- function(s){
   s <- trim(s)
   pattern <- "^[+-]?[0-9]+$"
@@ -70,9 +137,13 @@ isStrInt <- function(s){
   ifelse(m > 0, TRUE, FALSE)
 }
 
-isStrNum <- function(s){
+#' @rdname isStrInt
+#' @export
+isStrNum <- function(s, dec='.'){
   s <- trim(s)
-  pattern <- "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$"
+  pdec <- ifelse(dec=='.', '\\.', ',')
+  pattern <- paste('^[-+]?[0-9]*', pdec, '?[0-9]+([eE][-+]?[0-9]+)?$', sep='')
+  #pattern <- "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$"
   m <- regexpr(pattern, s)
   ifelse(m > 0, TRUE, FALSE)
 }

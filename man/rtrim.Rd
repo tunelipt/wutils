@@ -1,30 +1,31 @@
-\name{trim}
-\alias{rtrim}
+\name{rtrim}
 \alias{ltrim}
+\alias{rtrim}
 \alias{trim}
 \title{String trimming.}
-\description{Trims whitespace off the ends of strings.}
 \usage{
-rtrim(s, chars=" \n\t\r")
-ltrim(s, chars=" \n\t\r")
-trim(s, chars=" \n\t\r")
+  rtrim(s, chars = " \n\t\r")
+
+  ltrim(s, chars = " \n\t\r")
+
+  trim(s, chars = " \n\t\r")
 }
 \arguments{
-\item{s}{Character array to be trimmed}
-\item{chars}{Characters to be trimmed.}
+  \item{s}{Character array to be trimmed.}
+
+  \item{chars}{Characters to be trimmed.}
+}
+\value{
+  Trimmed version of the character array.
+}
+\description{
+  Trims whitespace off the ends of strings.
 }
 \details{
-  \code{rtrim} trims the right end of the string.
-
-  \code{ltrim} trims the left end of a string.
-
+  \code{rtrim} trims the right end of the string,
+  \code{ltrim} trims the left end of the string and
   \code{trim} trims both ends of the string.
 }
-\value{Trimmed version of the character array.}
-\seealso{
-  \code{\link{sub}}
-}
-
 \examples{
 s <- "   garbagexxxx"
 print(rtrim(s))
@@ -35,3 +36,7 @@ print(trim(s))
 print(trim(s,'x'))
 print(trim(s,' x'))
 }
+\seealso{
+  \code{\link{sub}}
+}
+

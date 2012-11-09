@@ -2,14 +2,19 @@
 #'
 #' Simple function for interactive input.
 #' This function displays a prompt that await a Yes/No reply.
-#' If the optional argument \coide{pt} is TRUE, the function
-#' expects S/N (portuguese).
+#' If the optional argument \code{pt} is TRUE, the function
+#' expects S /N (portuguese).
 #'
-#' @param msh Prompt to be displayed.
+#' @param msh Prompt to be displayed before asking Y/N.
 #' @param pt Use portuguese?
-#' @return TRUE -> YES, FALSE-> NO.
+#' @return TRUE (YES), FALSE (NO).
 #' @export
-#' @example
+#' @examples
+#' ans <- msgYesNo("Sim ou Não", pt=TRUE)
+#' print(ans)
+#' ans <- msgYesNo("Yes or No")
+#' print(ans)
+#'
 msgYesNo <- function(msg='', pt=FALSE){
   if (pt){
     y<-'S'

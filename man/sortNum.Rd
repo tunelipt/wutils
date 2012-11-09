@@ -1,0 +1,25 @@
+\name{sortNum}
+\alias{sortNum}
+\title{Sort strings with numbers using the numbers as sorting elements.}
+\usage{
+  sortNum(x, decreasing = FALSE, index.return = FALSE)
+}
+\arguments{
+  \item{x}{Strings to be sorted containing at least one
+  integer group.}
+
+  \item{decreasing}{Sort the sequence in decreasing order?}
+
+  \item{index.return}{Return the indexes of the sorted
+  vector?}
+}
+\value{
+  Sorted vector or, depending on argument
+  \code{index.return} index.
+}
+\description{
+  Often a sequence of strings contain a numbers and it is
+  necessary to sort these strings according to these
+  numbers and not alphabetically.
+}
+

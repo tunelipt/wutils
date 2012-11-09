@@ -1,8 +1,8 @@
-\name{linearFit}
-\alias{linearFit}
-\title{Linear regression.}
+\name{logFit}
+\alias{logFit}
+\title{Log fit}
 \usage{
-  linearFit(x, y)
+  logFit(x, y)
 }
 \arguments{
   \item{x}{Vector containing x coordinates of the points.}
@@ -13,22 +13,24 @@
   Vector with fit coefficients.
 }
 \description{
-  Calculates the linear fit of a set of points using
+  Calculates the log fit of a set of points using
   \code{\link{lm}}. This function returns the coefficients
   that best approximate the set of points according to the
-  equation \deqn{y = a_1 + a_2\cdot x}{y = a1 + a2*x} The
-  function returns the vector \code{c(a1, a2)}.
+  equation \deqn{y = a_1 + a_2\cdot \log x}{y = a1 +
+  a2*log(x)} The function returns the vector \code{c(a1,
+  a2)}.
 }
 \examples{
 x <- 1:10
-y <- 2*x + rnorm(10, sd=0.4)
-fit <- linearFit(x, y)
+y <- 3*log(x) + 1 + rnorm(10, sd=0.2)
+
+fit <- logFit(x, y)
 plot(x, y, xlab='x', ylab='y')
-lines(x, fit[1] + fit[2]*x)
-print(fit)
+lines(x, fit[1] + fit[2]*log(x))
+print(fit)#' x <- 1:10
 }
 \author{
-  Paulo José Saiz Jabardo
+  Paulo José Saiz Jabardo.
 }
 \seealso{
   \code{\link{lm}} \code{\link{predict.lm}}

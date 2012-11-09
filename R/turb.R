@@ -1,12 +1,10 @@
-#' Integral length scale calculation of turbulent flows
+#' Integral length scale calculation of turbulent flows.
 #'
 #' Calculates the integral length scale.
 #'
 #'  Uses equation XYZ from Semiu and Scanlan book to compute the integral
 #'  length scale:
-#'
 #'  \deqn{L = \frac{1}{2\pi}\frac{\bar{U}}{f_\text{peak}}}{L = 1/(2.pi) Um / f_peak}
-#'
 #' The spectrum is computed using \code{\link{spec.pgram}} and parameter
 #' \code{spans} is passed to this function to smooth the spectrum. If
 #' parameter \code{nn} is \code{NULL}, all points of the spectrum is
@@ -26,7 +24,7 @@
 #' @param verbose Print calculation info?
 #' @return Integral length scale.
 #' @seealso \code{\link{spec.pgram}  \code{\link{lm}} 
-#' @author Paulo José Saiz Jabardo <pjabardo@ipt.br>
+#' @author Paulo José Saiz Jabardo 
 #' @export
 integralScale <- function(u, spans=NULL, nn=NULL, degree=4, plt=FALSE, verbose=TRUE){
 
@@ -78,7 +76,7 @@ integralScale <- function(u, spans=NULL, nn=NULL, degree=4, plt=FALSE, verbose=T
 #' @param y Vector containing y coordinates of the points.
 #' @return Vector with fit coefficients.
 #' @seealso   \code{\link{lm}}  \code{\link{predict.lm}}
-#' @author Paulo José Saiz Jabardo <pjabardo@ipt.br>
+#' @author Paulo José Saiz Jabardo
 #' @examples
 #' x <- 1:10
 #' y <- 2*x + rnorm(10, sd=0.4)
@@ -104,13 +102,13 @@ linearFit <- function(x,y){
 #' @param y Vector containing y coordinates of the points.
 #' @return Vector with fit coefficients.
 #' @seealso   \code{\link{lm}}  \code{\link{predict.lm}}
-#' @author Paulo José Saiz Jabardo <pjabardo@ipt.br>
+#' @author Paulo José Saiz Jabardo.
 #' @examples
 #' x <- 1:10
 #' y <- 3*log(x) + 1 + rnorm(10, sd=0.2)
 #'
 #' fit <- logFit(x, y)
-#'plot(x, y, xlab='x', ylab='y')
+#' plot(x, y, xlab='x', ylab='y')
 #' lines(x, fit[1] + fit[2]*log(x))
 #' print(fit)#' x <- 1:10
 #' @export

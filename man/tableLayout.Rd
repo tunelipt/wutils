@@ -1,0 +1,49 @@
+\name{tableLayout}
+\alias{tableLayout}
+\title{Calculates multiple page/column table layout.}
+\usage{
+  tableLayout(nlines, ntabcols, ntablines, byrow = FALSE,
+    fillbyrow = TRUE)
+}
+\arguments{
+  \item{nlines}{Number of lines of the original table.}
+
+  \item{ntabcols}{Number of coumns the page should be
+  subdivided.}
+
+  \item{ntablines}{Number of lines each page should have.}
+
+  \item{byrow}{Should the tables be filled by rows?}
+
+  \item{fillbyrow}{How to handle partial last pages. Should
+  the last page be "condensed" to minimize the number of
+  rows?}
+}
+\value{
+  3D array where the indicies specify the line, column and
+  page where each line will go.
+}
+\description{
+  Given a table with a certain number of lines, this
+  function calculates the number of columns and pages
+  necessary to print the table in paper.
+}
+\details{
+  Data frames are very useful and there are several ways to
+  generate an output. Often, however, the tables should be
+  printed and the printout spans several pages and what is
+  worse, if the table has few columns, there will be lots
+  of white space. This function calculates a layout that
+  can be used to pack the table in several pages. The
+  printed table might use several pages and several columns
+  on each page. On each page, the columns bight be filled
+  by rows or by columns and the last page, usually
+  partially filled only, how should it be filled?
+}
+\examples{
+print(tableLayout(30, 2, 9))
+print(tableLayout(30, 2, 9), byrow=TRUE)
+print(tableLayout(30, 2, 9, filledbyrow=TRUE))
+print(tableLayout(30, 3, 10))
+}
+

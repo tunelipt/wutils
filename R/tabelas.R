@@ -1,6 +1,31 @@
 # Subroutines that handle table creation for LaTeX output.
 
 
+#' Calculates multiple page/column table layout.
+#'
+#' Given a table with a certain number of lines, this function calculates the number
+#' of columns and pages necessary to print the table in paper.
+#'
+#' Data frames are very useful and there are several ways to generate an output.
+#' Often, however, the tables should be printed and the printout spans several pages
+#' and what is worse, if the table has few columns, there will be lots of white space.
+#' This function calculates a layout that can be used to pack the table in several pages.
+#' The printed table might use several pages and several columns on each page. On
+#' each page, the columns bight be filled by rows or by columns and the last page,
+#' usually partially filled only, how should it be filled?
+#'
+#' @param nlines Number of lines of the original table.
+#' @param ntabcols Number of coumns the page should be subdivided.
+#' @param ntablines Number of lines each page should have.
+#' @param byrow Should the tables be filled by rows?
+#' @param fillbyrow How to handle partial last pages. Should the last page be "condensed" to minimize the number of rows?
+#' @return 3D array where the indicies specify the line, column and page where each line will go.
+#' @examples
+#' print(tableLayout(30, 2, 9))
+#' print(tableLayout(30, 2, 9), byrow=TRUE)
+#' print(tableLayout(30, 2, 9, filledbyrow=TRUE))
+#' print(tableLayout(30, 3, 10))
+#' @export
 tableLayout <- function(nlines, ntabcols, ntablines, byrow=FALSE, fillbyrow=TRUE){
 
   nperpage <- ntabcols * ntablines
@@ -44,6 +69,20 @@ tableLayout <- function(nlines, ntabcols, ntablines, byrow=FALSE, fillbyrow=TRUE
   
     
 
+#' Generate a LaTeX table from the table layout.
+#'
+#' After generating a layout with \code{\link{tableLayout}} this function generates
+#' a set of LaTeX files that contain the data in table format.
+#'
+#' @param suffix Suffix of the file name.
+#' @param tab Data to be written to LaTeX files.
+#' @param tab.lay Table layout computed with \code{\link{tableLayout}}.
+#' @param Header of each column. If not specified, the names of each column is used.
+#' @param units An optional second line in the header specifying units or some other info.
+#' @param pos LaTeX tabular position specifier for each variable.
+#' @param dname Directory name where the file should be written.
+#' @param preamble Some message that should be written before the header.
+#' @export
 latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
                          pos=NULL, dname=NULL, preamble=NULL){
 

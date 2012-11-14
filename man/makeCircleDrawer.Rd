@@ -1,0 +1,32 @@
+\name{makeCircleDrawer}
+\alias{makeCircleDrawer}
+\title{Creates a function that draws a circle.}
+\usage{
+  makeCircleDrawer(xc, yc, D, col = rgb(0, 0, 0, 0.5), ...)
+}
+\arguments{
+  \item{xc}{X center of the circle.}
+
+  \item{yc}{Y center of the circle.}
+
+  \item{D}{Diameter of the circle.}
+
+  \item{col}{Color that should be used.}
+
+  \item{...}{Arguments that are passed to
+  \code{\link{polygon}}.}
+}
+\description{
+  Creates a function that draws a circle at given center
+  with given diameter.
+}
+\examples{
+plot.new()
+plot.window(c(-1.5, 1.5), c(-1.5, 1.5), asp=1)
+fun <- makeCircleDrawer(0, 0, 1, 'black')
+fun()
+}
+\seealso{
+  \code{\link{contourf}} \code{\link{polygon}}
+}
+

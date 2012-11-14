@@ -1,20 +1,31 @@
 \name{basename2}
 \alias{basename2}
-\title{Improved \code{\link{basename}}}
-\description{Simply a wrapper around \code{\link{basename}} that allows
-  removing the extension part from file names.}
+\title{Improved  \code{\link{basename}}.}
 \usage{
-basename2(path, ext=NULL)
+  basename2(path, ext = NULL)
 }
 \arguments{
-  \item{path}{Path name}
-  \item{ext}{Whether to remove the extensio}
+  \item{path}{Path name.}
+
+  \item{ext}{Extension to be excluded. If \code{NULL}, just
+  use \code{\link{basename}}.}
 }
-\value{The basename of the path}
-
+\value{
+  Basename of the path.
+}
+\description{
+  Simply a wrapper around \code{\link{basename}} that
+  allows removing the extension part from file names.
+}
+\details{
+  The R function \code{\link{basename}}^is very useful when
+  writing scripts but often it is necessary to change the
+  extension. The UNIX utililty \code{basename} allows for a
+  second argument the provides a termination suffix that
+  can be excluded.
+}
 \examples{
-
 print(basename2("/home/file.txt"))
 print(basename2("/home/file.txt", ext='.txt'))
-
 }
+

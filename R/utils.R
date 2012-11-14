@@ -148,7 +148,26 @@ isStrNum <- function(s, dec='.'){
   ifelse(m > 0, TRUE, FALSE)
 }
 
-
+#' Reads numbers from prompt.
+#'
+#' Reads number from a prompt.
+#'
+#'  These functions print a prompt and repeats until the correct type of
+#'  input is read and returns the input. The comments and messages can be
+#'  displayed in portuguese if option \code{pt} is set to \code{TRUE}.
+#'
+#'  \code{readInteger} expects an integer from the user and
+#'  \code{readNumber} a number (float or integer).
+#'
+#' @param msg Prompt to be displayed.
+#' @param pt Use portuguese messages?
+#' @return Number/Integer read.
+#' @examples
+#' print(readInteger("Enter an integer: "))
+#' print(readNumber("Enter a number: "))
+#' print(readInteger("Entre com um inteiro: ", pt=TRUE))
+#' print(readNumber("Entre com um numero: ", pt=FALSE))
+#' @export
 readInteger <- function(msg='', pt=FALSE){
   if (pt)
     question <- "Entre com um inteiro!\n"
@@ -163,6 +182,8 @@ readInteger <- function(msg='', pt=FALSE){
 
 }
 
+#' @rdname readInteger
+#' @export
 readNumber <- function(msg='', pt=FALSE){
   if (pt)
     question <- "Entre com um número!\n"
@@ -175,9 +196,30 @@ readNumber <- function(msg='', pt=FALSE){
   }
 }
 
+
+#' Integer to string converter
+#'
+#' Converts an integer into a string with a given digits.
+#' If necessary, the function prepends the number with zeros to fill the digits.
+#'
+#' When creating numbered file names, the file system lists the files alphabetically.
+#' This is usually a nuisance since the listing is out of order: file_1, file_10, file_11, ..., file_2.
+#' This function makes it easy to create file names such as file_01, file_02, ..., file_09,
+#' file_10, file_11, ....
+#'
+#' @param Integer to be converted to string.
+#' @param n number of digits to be used.
+#' @return String containing the number padded on its left with 0s \code{n} characters long.
+#' @examples
+#' print(numString(1:10, 2))
+#' print(numString(1:10, 4))
+#' @export
 numString <- function(x, n=3)
   substring(paste(10^n + x), 2)
 
+
+#' @rdname buildFileName
+#' @export
 buildFileNameFun <- function(..., prefix="ponto", ext=".rda", sep='-'){
   nums <- list(...)
   nnums <- length(nums)
@@ -196,14 +238,78 @@ buildFileNameFun <- function(..., prefix="ponto", ext=".rda", sep='-'){
 
 }
 
-buildFileName <- function(n, prefix='ponto', ext='.rda', sep='-', nc=NULL){
+#' Sequentially numbered file name creator
+#'
+#' Useful functions that create sequentially numbered file
+#'  names.
+#'
+#' It is very common useful to build file names with sequential numbers
+#' within. So that the numbers appear in the correct order in directory
+#' listings or simply that when viewing the file names they appear
+#' homogeneous it is nice to have a function that perform build this file
+#' names easily. \code{buildFileName} takes as input a sequence of numbers
+#' and builds the file names with given prefix, extension and
+#' separator.
+#' 
+#' The other function, \code{buildFileNameFun} returns a
+#' function that creates the file name given the indexes. It allows
+#' multiple indexes so that, for instance a grid of file names can be
+#' created.
+#'
+#' @param n Numbers used to build file name.
+#' @param prefix Prefix of the filename.
+#' @param ext File name extension. If \code{NULL}, use no extension.
+#' @param sep Separator element between different parts of the file name
+#' @param nc Number of characters to use when building the numbers. If null use largest number in \code{n}.
+#' @return Character vector with the names.
+#' @examples
+#' print(buildFileName(1:10, ext='.txt'))
+#' print(buildFileName(1:10, ext='.txt', sep='_'))
+#' print(buildFileName(1:10, ext=NULL))
+#' print(buildFileName(1:10, nc=3))
+#' @export
+buildFileName <- function(n, prefix='ponto', ext=NULL, sep='-', nc=NULL){
   if (is.null(nc)) nc <- nchar(max(n))
+  if (is.null(ext)) ext <- ""
   paste(prefix, sep, numString(n, nc), ext, sep='')
 }
 
+
+#' \code{\link{parse}} with better defaults.
+#'
+#' This function is now superseeded by \code{\link{paste0}}!
+#' 
+#'Simply a wrapper around \code{\link{parse}} where the default separator is an empty character.
+#' Uses the same parameters as \code{\link{parse}}.
+#'
+#' @param ... Arguments to be passed to \code{\link{paste}}.
+#' @param sep Separator.
+#' @param collapse Character that joins vectors.
+#' @return A character vector.
+#' @examples
+#' print(join(1,2,3))
+#' print(join(1:10))
+#' print(join(1:10, collapse="."))
+#' @export
 join <- function(..., sep='', collapse=NULL)
   paste(..., sep=sep, collapse=collapse)
 
+#' Improved  \code{\link{basename}}.
+#' 
+#' Simply a wrapper around \code{\link{basename}} that allows
+#' removing the extension part from file names.
+#'
+#' The R function \code{\link{basename}}^is very useful when writing scripts but often
+#' it is necessary to change the extension. The UNIX utililty \code{basename} allows for a
+#' second argument the provides a termination suffix that can be excluded.
+#'
+#' @param path Path name.
+#' @param ext Extension to be excluded. If \code{NULL}, just use \code{\link{basename}}.
+#' @return Basename of the path.
+#' @examples
+#' print(basename2("/home/file.txt"))
+#' print(basename2("/home/file.txt", ext='.txt'))
+#' @export
 basename2 <- function(path, ext=NULL){
   path <- base::basename(path)
   if (is.null(ext))
@@ -262,12 +368,42 @@ rep2 <- function(x, r){
   return(y)
 }
 
+#' Identity function.
+#'
+#' A function that simply returns its argument.
+#'
+#' @param x Argument to be returned.
+#' @return The input argument.
+#' @export
 idfun <- function(x) x
 
 #' Joins elements of a list according to some criteria.
 #'
 #' This function is a flexible version of rbind, cbind c.
 #' Its binds together every elements
+#'
+#' Often it is necessary to join elements of a list according to some criteria.
+#' This function does that in a very flexible way. The binding function can be specified,
+#' and a function can be applied to each element before binding. Another feature
+#' is the possibility to do this recursively. The function \code{bindArgs} does
+#' basically the same thing, except that it binds the variable list arguments instead of
+#' the elements of a list.
+#'
+#' @param lst List whose elements shoud be binded.
+#' @param bindfun Bind function that should be used to join the elements.
+#' @param fun Function to be applied to each element of the list.
+#' @param recursive How many levels of recursrion should be used.
+#' @param ... Arguments to be binded in \code{bindArgs}.
+#' @examples
+#' x <- matrix(rnorm(12), nr=3, nc=4)
+#' lst <- lapply(1:4, function(i) x[,i])
+#' print(bindList(lst, cbind) - x)
+#' print(bindList(lst, rbind) - t(x))
+#' print(bindList(lst, c, mean))
+#' lst2 <- list(lst, lst, lst)
+#' print(bindList(lst2, rbind, mean, recursive=1))
+#' print(bindArgs(lst[[1]], lst[[2]], lst[[3]], lst[[4]], bindfun=cbind) - x)
+#' @export
 bindList <- function(lst, bindfun=rbind, fun=NULL, recursive=0){
   
   
@@ -289,7 +425,8 @@ bindList <- function(lst, bindfun=rbind, fun=NULL, recursive=0){
   return(x)
 }
 
-
+#' @rdname bindList
+#' @export
 bindArgs <- function(..., bindfun=rbind, fun=NULL, recursive=0)
   bindList(list(...), bindfun=bindfun, fun=fun, recursive=recursive)
 

@@ -11,7 +11,7 @@
 
   \item{dt}{Time steps betweend samples. If not specified,
   \code{x} is assumed to be a time series \code{\link{ts}}
-  object.}}
+  object.}
 }
 \value{
   The filtered signal

@@ -39,17 +39,16 @@
   maximum spectral density is found
   (\eqn{f_\text{peak}}{f_peak}) and the spectrum is fitted
   using only points whose frequency is smaller than
-  \eqn{nn\cdot f_\text{peak}}{nn.f_peak}.
-
-  The log of spectral density and log of frequency are than
-  fitted to a \code{degree} degrees polynomial and the peak
-  frequency is calculated and used to calculate the
-  integral length scale.
+  \eqn{nn\cdot f_\text{peak}}{nn.f_peak}. The log of
+  spectral density and log of frequency are than fitted to
+  a \code{degree} degrees polynomial and the peak frequency
+  is calculated and used to calculate the integral length
+  scale.
 }
 \author{
   Paulo José Saiz Jabardo
 }
 \seealso{
-  \code{\link{spec.pgram} \code{\link{lm}}
+  \code{\link{spec.pgram}} \code{\link{lm}}
 }
 

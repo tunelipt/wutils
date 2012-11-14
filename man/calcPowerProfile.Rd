@@ -47,7 +47,6 @@
 z <- seq(10, 400, by=10)
 zref <- 300
 u <- 10*(z/zref)^0.2 + rnorm(10, sd=0.2)
-
 fit <- calcPowerProfile(z,u,zref=300)
 plot(u, z, xlab='Velocity (m/s)', ylab='Height (mm)')
 lines(fit['u']*(z/zref)^fit['p'], z)

@@ -11,7 +11,6 @@
 #' fitted. If it is an integer, the point os maximum spectral density is
 #' found (\eqn{f_\text{peak}}{f_peak}) and the spectrum is fitted using only points whose
 #' frequency is smaller than \eqn{nn\cdot f_\text{peak}}{nn.f_peak}.
-#'
 #' The log of spectral density and log of frequency are than fitted to a
 #' \code{degree} degrees polynomial and the peak frequency is calculated
 #'  and used to calculate the integral length scale.
@@ -23,7 +22,7 @@
 #' @param plt Whether the spectrum should be plot.
 #' @param verbose Print calculation info?
 #' @return Integral length scale.
-#' @seealso \code{\link{spec.pgram}  \code{\link{lm}} 
+#' @seealso \code{\link{spec.pgram}} \code{\link{lm}} 
 #' @author Paulo José Saiz Jabardo 
 #' @export
 integralScale <- function(u, spans=NULL, nn=NULL, degree=4, plt=FALSE, verbose=TRUE){
@@ -387,7 +386,6 @@ calcLogProfile <- function(z,u, k=0.4, return.fun=FALSE, v=NULL, h=NULL,...){
 #' z <- seq(10, 400, by=10)
 #' zref <- 300
 #' u <- 10*(z/zref)^0.2 + rnorm(10, sd=0.2)
-#' 
 #' fit <- calcPowerProfile(z,u,zref=300)
 #' plot(u, z, xlab='Velocity (m/s)', ylab='Height (mm)')
 #' lines(fit['u']*(z/zref)^fit['p'], z)

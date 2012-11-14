@@ -1,29 +1,37 @@
 \name{bandfilt}
 \alias{bandfilt}
-\title{Band filter}
-\description{Implements a band filter using \code{\link{fft}}.}
+\title{Band pass filter.}
 \usage{
-hpfilt(x, freq, dt=NULL)
+  bandfilt(x, freq1, freq2, dt = NULL)
 }
 \arguments{
   \item{x}{Array containing data to be filtered.}
-  \item{freq1}{Lower frequency above which data will be filtered.}
-  \item{freq2}{Higher frequency below which data will be filtered.}
-  \item{dt}{Time steps betweend samples. If not specified, \code{x} is
-    assumed to be a time series \code{\link{ts}} object.}
+
+  \item{freq1}{Lower frequency above which data will be
+  filtered.}
+
+  \item{freq2}{Higher frequency below which data will be
+  filtered.}
+
+  \item{dt}{Time steps betweend samples. If not specified,
+  \code{x} is assumed to be a time series \code{\link{ts}}
+  object.}}
 }
-\seealso{
-  \code{\link{lpfilt}}
-  \code{\link{hpfilt}}
-  \code{\link{ìntegr}}
+\value{
+  The filtered signal
+}
+\description{
+  Uses \code{link{fft}} to compute a band pass filter to
+  the data.
 }
 \examples{
-  tt <- seq(0, 4, len=513)[1:512]
-  dt <- tt[2]
-  x = ts(cos(4*pi*tt) + 1.5*sin(2*pi*tt) + 3 + cos(6*2*pi*tt),start=0,
-  deltat=dt)
-  xhp <- bandfilt(x, 1.5, 2.5)
-  plot(x, ylim=range(x, xhp))
-  lines(xhp, lty=2)
-  legend(0, max(x, xhp), c("Signal", "Filtered Signal"), lty=c(1,2))
+tt <- seq(0, 4, len=513)[1:512]
+ dt <- tt[2]
+ x = ts(cos(4*pi*tt) + 1.5*sin(2*pi*tt) + 3 + cos(6*2*pi*tt),start=0,
+ deltat=dt)
+ xhp <- hpfilt(x, 1.5)
+ plot(x, ylim=range(x, xlp))
+ lines(xhp, lty=2)
+legend(0, max(x, xhp), c("Signal", "Filtered Signal"), lty=c(1,2))
 }
+

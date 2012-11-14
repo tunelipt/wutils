@@ -1,19 +1,25 @@
 \name{integr}
 \alias{integr}
-\title{Signal integrator and differentiator}
-\description{Implements integrals and derivatives of sampled data using \code{\link{fft}}.}
+\title{Signal integrator and differentiator.}
 \usage{
-integr(x, p=1, dt=NULL)
+  integr(x, p = 1, dt = NULL)
 }
 \arguments{
   \item{x}{Array containing data to be integrate.}
-  \item{p}{Order of integration. Negative integers represent derivatives.}
-  \item{dt}{Time steps betweend samples. If not specified, \code{x} is
-    assumed to be a time series \code{\link{ts}} object.}
+
+  \item{p}{Order of integration. Negative integers
+  represent derivatives.}
+
+  \item{dt}{Time steps betweend samples. If not specified,
+  \code{x} is assumed to be a time series \code{\link{ts}}
+  object.}
 }
-\seealso{
-  \code{\link{hpfilt}}
-  \code{\link{lpfilt}}
+\value{
+  A vector The integral of the signal.
+}
+\description{
+  Implements integrals and derivatives of sampled data
+  using \code{\link{fft}}.
 }
 \examples{
 tt <- seq(0, 1, len=65)[1:64]

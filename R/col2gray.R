@@ -1,5 +1,19 @@
 require(png) 
 
+#' Converts an image from a color keymap to grey scale.
+#'
+#' An utility function used when converting some figure that has
+#' a color map from a color scale to a grey scale.
+#'
+#' If a pixel has o color too far away from the color scale, the pixel is left
+#' without modification since it probably belongs to annotations on the figure.
+#'
+#' @param img Array containing the image.
+#' @param tol Tolerance in color interpolation.
+#' @param clen Number of color subdivisions that should be used.
+#' @param myrain Color scale.
+#' @return Index characterizing the level of each pixel.
+#' @export
 col2gray <- function(img, tol=20, clen=100, myrain=col2rgb(cfd.colors(clen))){
 
 
@@ -23,7 +37,21 @@ col2gray <- function(img, tol=20, clen=100, myrain=col2rgb(cfd.colors(clen))){
   apply(img, c(1,2), getindex)
 }
 
-
+#' Converts an image from a color keymap to grey scale.
+#'
+#' An utility function used when converting some figure that has
+#' a color map from a color scale to a grey scale.
+#'
+#' If a pixel has o color too far away from the color scale, the pixel is left
+#' without modification since it probably belongs to annotations on the figure.
+#'
+#' @param img Array containing the image.
+#' @param tol Tolerance in color interpolation.
+#' @param clen Number of color subdivisions that should be used.
+#' @param myrain Color scale.
+#' @param mygray Gray scale that is used when generating output.
+#' @return Gray scale image.
+#' @export
 convert <- function(img, tol=20, clen=100, myrain=col2rgb(cfd.colors(clen)),
                     mygray=seq(0.02, 0.96, len=clen)){
 
@@ -60,6 +88,21 @@ convert <- function(img, tol=20, clen=100, myrain=col2rgb(cfd.colors(clen)),
 }
 
 
+#' Converts an image from a color keymap to grey scale.
+#'
+#' An utility function used when converting some figure that has
+#' a color map from a color scale to a grey scale.
+#'
+#' If a pixel has o color too far away from the color scale, the pixel is left
+#' without modification since it probably belongs to annotations on the figure.
+#'
+#' @param ipng Input png file. 
+#' @param opng Output png file. 
+#' @param tol Tolerance in color interpolation.
+#' @param clen Number of color subdivisions that should be used.
+#' @param color.palette Color scale.
+#' @param glim Gray scale that is used when generating output.
+#' @export
 convertFile <- function(ipng, opng, tol=20, clen=100, color.palette=cfd.colors,
                         glim=c(0.02, 0.96)){
 

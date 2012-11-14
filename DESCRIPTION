@@ -13,7 +13,6 @@ License: GPL (>= 3)
 Collate:
     'col2gray.R'
     'contour.R'
-    'fid.R'
     'filter.R'
     'graphutils.R'
     'metrology.R'

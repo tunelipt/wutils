@@ -6,7 +6,7 @@
 #'
 #' @param x Array containing data to be filtered.
 #' @param freq Frequency below which data will be filtered.
-#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.}
+#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
 #' @return The filtered signal
 #' @examples
 #'  tt <- seq(0, 4, len=513)[1:512]
@@ -44,7 +44,7 @@ lpfilt <- function(x, freq, dt=NULL){
 #'
 #' @param x Array containing data to be filtered.
 #' @param freq Frequency above which data will be filtered.
-#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.}
+#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
 #' @return The filtered signal
 #' @examples
 #'  tt <- seq(0, 4, len=513)[1:512]
@@ -85,7 +85,7 @@ hpfilt <- function(x, freq, dt=NULL){
 #' @param x Array containing data to be filtered.
 #' @param freq1 Lower frequency above which data will be filtered.
 #' @param freq2 Higher frequency below which data will be filtered.
-#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.}
+#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
 #' @return The filtered signal
 #' @examples
 #'  tt <- seq(0, 4, len=513)[1:512]

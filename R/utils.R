@@ -358,6 +358,8 @@ sortNum <- function(x, decreasing=FALSE, index.return=FALSE){
 #' @param x Vector with elements that should be repeated.
 #' @param r Vector of the same size as \code{x} specifiying how many times each element should be repeated.
 #' @return Vector with repeated elements.
+#' @examples
+#' print(rep2(c(1,2,3), c(1,2,3)))
 #' @export
 rep2 <- function(x, r){
 

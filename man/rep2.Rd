@@ -18,4 +18,7 @@
   elements where the number of times each number is
   repeated can be specified independently.
 }
+\examples{
+print(rep2(c(1,2,3), c(1,2,3)))
+}
 

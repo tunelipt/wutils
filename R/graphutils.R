@@ -13,7 +13,7 @@
 #' @param leg.side Side to put common legend (1-bottom, 2-left, 3-top, 4-right).
 #' @param Size of the common legend window.
 #' @return A list containing the layout.
-#' @seealso arrayLayout legendWindow
+#' @seealso \code{\link{arrayLayout}} \code{\link{legendWindow}}
 #' @examples
 #' lay <- getArrayLayout(6, 2, 2)
 #' arrayLayout(1, lay)
@@ -92,7 +92,7 @@ getArrayLayout <- function(nfig, nrow=4, ncol=3, leg=TRUE, byrow=FALSE, leg.side
 #' @param page Page number to get layout.
 #' @param lay Layout structure calculated with \code{\link{getArrayLayout}}.
 #' @param Analogous to respect parameter in \code{\link{layout}} function.
-#' @seealso getArrayLayout layout
+#' @seealso \code{\link{getArrayLayout}} \code{\link{layout}}
 #' @examples
 #' lay <- getArrayLayout(6, 2, 2)
 #' arrayLayout(1, lay)
@@ -119,8 +119,8 @@ arrayLayout <- function(page, lay, respect=FALSE){
 #' Simply a wrapper around \code{\link{legend}} to create a window that contains only
 #' the legend.
 #'
-#' @param ... Parameters that will be passed on to \code{\link{\legend}}.
-#' @seealso legend 
+#' @param ... Parameters that will be passed on to \code{\link{legend}}.
+#' @seealso \code{\link{legend}}
 #' @examples
 #' lay <- getArrayLayout(6, 2, 2)
 #' arrayLayout(1, lay)
@@ -240,7 +240,7 @@ makeColorFun <- function(xmin, xmax, n=100, palette=cfd.colors, underflow=NULL, 
 #' @param spc A parameter that contracts (spc < 1) or expands (z>1) the size of the keymap.
 #' @param barw Width of the keymap.
 #' @param ... Parameters passed to \code{\link{text}} function.
-#' @seealso rect text contourf
+#' @seealso \code{\link{rect}} \code{\link{text}} \code{\link{contourf}}
 #' @examples
 #' keyWindow(1:10, side=4)
 #' keyWindow(1:10, side=1)

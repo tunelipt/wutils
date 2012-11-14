@@ -42,6 +42,6 @@ plot(1:10)
 legendWindow("center", legend="Points", pch=1)
 }
 \seealso{
-  arrayLayout legendWindow
+  \code{\link{arrayLayout}} \code{\link{legendWindow}}
 }
 

@@ -286,6 +286,7 @@ buildFileName <- function(n, prefix='ponto', ext=NULL, sep='-', nc=NULL){
 #' @param sep Separator.
 #' @param collapse Character that joins vectors.
 #' @return A character vector.
+#' @seealso \code{\link{paste0}}
 #' @examples
 #' print(join(1,2,3))
 #' print(join(1:10))
@@ -358,6 +359,7 @@ sortNum <- function(x, decreasing=FALSE, index.return=FALSE){
 #' @param x Vector with elements that should be repeated.
 #' @param r Vector of the same size as \code{x} specifiying how many times each element should be repeated.
 #' @return Vector with repeated elements.
+#' @seealso \code{\link{rep}}
 #' @examples
 #' print(rep2(c(1,2,3), c(1,2,3)))
 #' @export
@@ -396,6 +398,7 @@ idfun <- function(x) x
 #' @param fun Function to be applied to each element of the list.
 #' @param recursive How many levels of recursrion should be used.
 #' @param ... Arguments to be binded in \code{bindArgs}.
+#' @seealso \code{\link{rbind}} \code{\link{cbind}} \code{\link{c}} \code{\link{lapply}}
 #' @examples
 #' x <- matrix(rnorm(12), nr=3, nc=4)
 #' lst <- lapply(1:4, function(i) x[,i])

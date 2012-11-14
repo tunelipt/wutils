@@ -47,6 +47,6 @@ print(tableLayout(30, 2, 9, filledbyrow=TRUE))
 print(tableLayout(30, 3, 10))
 }
 \seealso{
-  latexOutput
+  \code{\link{latexOutput}}
 }
 

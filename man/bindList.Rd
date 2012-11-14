@@ -45,4 +45,8 @@ lst2 <- list(lst, lst, lst)
 print(bindList(lst2, rbind, mean, recursive=1))
 print(bindArgs(lst[[1]], lst[[2]], lst[[3]], lst[[4]], bindfun=cbind) - x)
 }
+\seealso{
+  \code{\link{rbind}} \code{\link{cbind}} \code{\link{c}}
+  \code{\link{lapply}}
+}
 

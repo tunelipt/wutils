@@ -28,4 +28,7 @@ print(join(1,2,3))
 print(join(1:10))
 print(join(1:10, collapse="."))
 }
+\seealso{
+  \code{\link{paste0}}
+}
 

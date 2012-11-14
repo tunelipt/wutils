@@ -35,6 +35,6 @@
   the data in table format.
 }
 \seealso{
-  tableLayout
+  \code{\link{tableLayout}}
 }
 

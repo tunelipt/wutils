@@ -34,6 +34,7 @@ keyWindow(1:10, side=4, spc=0.6)
 keyWindow(1:10, side=4, barw=0.2)
 }
 \seealso{
-  rect text contourf
+  \code{\link{rect}} \code{\link{text}}
+  \code{\link{contourf}}
 }
 

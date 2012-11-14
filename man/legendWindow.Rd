@@ -6,7 +6,7 @@
 }
 \arguments{
   \item{...}{Parameters that will be passed on to
-  \code{\link{\legend}}.}
+  \code{\link{legend}}.}
 }
 \description{
   Simply a wrapper around \code{\link{legend}} to create a
@@ -26,6 +26,6 @@ plot(1:10)
 legendWindow("center", legend="Points", pch=1)
 }
 \seealso{
-  legend
+  \code{\link{legend}}
 }
 

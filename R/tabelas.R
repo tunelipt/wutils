@@ -20,7 +20,7 @@
 #' @param byrow Should the tables be filled by rows?
 #' @param fillbyrow How to handle partial last pages. Should the last page be "condensed" to minimize the number of rows?
 #' @return 3D array where the indicies specify the line, column and page where each line will go.
-#' @seealso latexOutput
+#' @seealso \code{\link{latexOutput}}
 #' @examples
 #' print(tableLayout(30, 2, 9))
 #' print(tableLayout(30, 2, 9), byrow=TRUE)
@@ -83,7 +83,7 @@ tableLayout <- function(nlines, ntabcols, ntablines, byrow=FALSE, fillbyrow=TRUE
 #' @param pos LaTeX tabular position specifier for each variable.
 #' @param dname Directory name where the file should be written.
 #' @param preamble Some message that should be written before the header.
-#' @seealso tableLayout
+#' @seealso \code{\link{tableLayout}}
 #' @export
 latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
                          pos=NULL, dname=NULL, preamble=NULL){

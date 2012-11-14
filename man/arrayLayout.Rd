@@ -32,6 +32,6 @@ plot(1:10)
 legendWindow("center", legend="Points", pch=1)
 }
 \seealso{
-  getArrayLayout layout
+  \code{\link{getArrayLayout}} \code{\link{layout}}
 }
 

@@ -21,4 +21,7 @@
 \examples{
 print(rep2(c(1,2,3), c(1,2,3)))
 }
+\seealso{
+  \code{\link{rep}}
+}
 

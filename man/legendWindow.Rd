@@ -1,0 +1,31 @@
+\name{legendWindow}
+\alias{legendWindow}
+\title{Creates a legend on a window of its own.}
+\usage{
+  legendWindow(...)
+}
+\arguments{
+  \item{...}{Parameters that will be passed on to
+  \code{\link{\legend}}.}
+}
+\description{
+  Simply a wrapper around \code{\link{legend}} to create a
+  window that contains only the legend.
+}
+\examples{
+lay <- getArrayLayout(6, 2, 2)
+arrayLayout(1, lay)
+plot(1:10)
+plot(1:10)
+plot(1:10)
+plot(1:10)
+legendWindow("center", legend="Points", pch=1)
+arrayLayout(2, lay)
+plot(1:10)
+plot(1:10)
+legendWindow("center", legend="Points", pch=1)
+}
+\seealso{
+  legend
+}
+

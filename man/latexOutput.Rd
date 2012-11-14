@@ -34,4 +34,7 @@
   this function generates a set of LaTeX files that contain
   the data in table format.
 }
+\seealso{
+  tableLayout
+}
 

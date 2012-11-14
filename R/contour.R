@@ -1,6 +1,7 @@
-
+#' @export
 cfd.colors <- function(n) rev(rainbow(n, start=0, end=0.66667))
 
+#' @export
 fidContour <- function(x = seq(0, 1, length.out = nrow(z)),
                        y = seq(0, 1, length.out = ncol(z)),
                        z,
@@ -99,6 +100,7 @@ fidContour <- function(x = seq(0, 1, length.out = nrow(z)),
   if (!is.null(shapeFun)) shapeFun()
 }
 
+#' @export
 makeCircleDrawer <- function(xc, yc, D, col=rgb(0,0,0,0.5))
   function(){
     R <- D/2
@@ -112,6 +114,7 @@ makeCircleDrawer <- function(xc, yc, D, col=rgb(0,0,0,0.5))
 
 
 
+#' @export
 contourf <- function(x = seq(0, 1, length.out = nrow(z)),
                        y = seq(0, 1, length.out = ncol(z)),
                        z,

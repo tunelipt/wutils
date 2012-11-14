@@ -1,0 +1,47 @@
+\name{getArrayLayout}
+\alias{getArrayLayout}
+\title{Generate layout for multiple figures.}
+\usage{
+  getArrayLayout(nfig, nrow = 4, ncol = 3, leg = TRUE,
+    byrow = FALSE, leg.side = 1, leg.len = 0.2)
+}
+\arguments{
+  \item{nfig}{Number of figures that will be plotted.}
+
+  \item{nrow}{Number of rows on each page.}
+
+  \item{ncol}{Number of columns on each page.}
+
+  \item{leg}{Add a common legend region?}
+
+  \item{byrow}{fill each page by rows?}
+
+  \item{leg.side}{Side to put common legend (1-bottom,
+  2-left, 3-top, 4-right).}
+
+  \item{Size}{of the common legend window.}
+}
+\value{
+  A list containing the layout.
+}
+\description{
+  Calculates a multiple page layout for plotting multiplie
+  figures.
+}
+\examples{
+lay <- getArrayLayout(6, 2, 2)
+arrayLayout(1, lay)
+plot(1:10)
+plot(1:10)
+plot(1:10)
+plot(1:10)
+legendWindow("center", legend="Points", pch=1)
+arrayLayout(2, lay)
+plot(1:10)
+plot(1:10)
+legendWindow("center", legend="Points", pch=1)
+}
+\seealso{
+  arrayLayout legendWindow
+}
+

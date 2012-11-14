@@ -1,7 +1,32 @@
 # Graphing utilities:
 
 
-
+#' Generate layout for multiple figures.
+#'
+#' Calculates a multiple page layout for plotting multiplie figures.
+#'
+#' @param nfig Number of figures that will be plotted.
+#' @param nrow Number of rows on each page.
+#' @param ncol Number of columns on each page.
+#' @param leg Add a common legend region?
+#' @param byrow fill each page by rows?
+#' @param leg.side Side to put common legend (1-bottom, 2-left, 3-top, 4-right).
+#' @param Size of the common legend window.
+#' @return A list containing the layout.
+#' @seealso arrayLayout legendWindow
+#' @examples
+#' lay <- getArrayLayout(6, 2, 2)
+#' arrayLayout(1, lay)
+#' plot(1:10)
+#' plot(1:10)
+#' plot(1:10)
+#' plot(1:10)
+#' legendWindow("center", legend="Points", pch=1)
+#' arrayLayout(2, lay)
+#' plot(1:10)
+#' plot(1:10)
+#' legendWindow("center", legend="Points", pch=1)
+#' @export
 getArrayLayout <- function(nfig, nrow=4, ncol=3, leg=TRUE, byrow=FALSE, leg.side=1, leg.len=0.2){
 
   nperpage <- ncol*nrow
@@ -59,6 +84,28 @@ getArrayLayout <- function(nfig, nrow=4, ncol=3, leg=TRUE, byrow=FALSE, leg.side
 }
 
 
+#' Creates the layout of a page.
+#'
+#' Uses the layout calculated by \code{\link{getArrayLayout}} to create
+#' the layout of a page.
+#'
+#' @param page Page number to get layout.
+#' @param lay Layout structure calculated with \code{\link{getArrayLayout}}.
+#' @param Analogous to respect parameter in \code{\link{layout}} function.
+#' @seealso getArrayLayout layout
+#' @examples
+#' lay <- getArrayLayout(6, 2, 2)
+#' arrayLayout(1, lay)
+#' plot(1:10)
+#' plot(1:10)
+#' plot(1:10)
+#' plot(1:10)
+#' legendWindow("center", legend="Points", pch=1)
+#' arrayLayout(2, lay)
+#' plot(1:10)
+#' plot(1:10)
+#' legendWindow("center", legend="Points", pch=1)
+#' @export
 arrayLayout <- function(page, lay, respect=FALSE){
   mat <- lay$matrix[,,page]
   dim(mat) <- dim(lay$matrix)[1:2]
@@ -67,6 +114,26 @@ arrayLayout <- function(page, lay, respect=FALSE){
 }
 
 
+#' Creates a legend on a window of its own.
+#'
+#' Simply a wrapper around \code{\link{legend}} to create a window that contains only
+#' the legend.
+#'
+#' @param ... Parameters that will be passed on to \code{\link{\legend}}.
+#' @seealso legend 
+#' @examples
+#' lay <- getArrayLayout(6, 2, 2)
+#' arrayLayout(1, lay)
+#' plot(1:10)
+#' plot(1:10)
+#' plot(1:10)
+#' plot(1:10)
+#' legendWindow("center", legend="Points", pch=1)
+#' arrayLayout(2, lay)
+#' plot(1:10)
+#' plot(1:10)
+#' legendWindow("center", legend="Points", pch=1)
+#' @export
 legendWindow <- function(...){
 
   plot.new()
@@ -79,7 +146,20 @@ legendWindow <- function(...){
 }
   
   
-
+#' Shows the layout of a single page.
+#'
+#' Shows the layout of a page calculated using
+#' \code{\link{getArrayLayout}}. Basically an example of how
+#' the functions \code{\link{getArrayLayout}}, \code{\link{arrayLayout}} and '
+#' \code{\link{legend}}. It plots random data using the layout of a single page.
+#'
+#' @param lay Layout returned by \code{\link{getArrayLayout}}
+#' @param page Page to be plotted.
+#' @examples
+#' lay <- getArrayLayout(6, 2, 2)
+#' arrayLayout.show(lay, 1)
+#' arrayLayout.show(lay, 2)
+#' @export
 arrayLayout.show <- function(lay, page){
 
   arrayLayout(page, lay)
@@ -93,6 +173,31 @@ arrayLayout.show <- function(lay, page){
 }
 
 
+#' Generate a color interpolation function.
+#'
+#' Generates a function that calculates a color scale.
+#'
+#' In filled contour plots, a color corresponds to a value. This function
+#' creates a new function that given a value, returns the corresponding color.
+#' This function can use several different color palettes and can handle
+#' values outside the values limits.
+#'
+#' @param xmin Minimum value of the color scale.
+#' @param xmax Maximim value of the color scale.
+#' @param n Number of intermediate colors.
+#' @param palette Color palette used.
+#' @param underflow Color to use for smaller values, first color if NULL.
+#' @param underflow Color to use for largerr values, first color if NULL.
+#' @return Function that returns a color given a numeric value.
+#' @examples
+#' fun <- makeColorFun(0, 1, underflow='black', overflow='white')
+#' x <- c(-1, seq(0, 1, len=5), 2)
+#' xcol <- fun(x)
+#' keyWindow(x, xcol)
+#' fun <- makeColorFun(0, 1)
+#' xcol <- fun(x)
+#' keyWindow(x, xcol)
+#' @export 
 makeColorFun <- function(xmin, xmax, n=100, palette=cfd.colors, underflow=NULL, overflow=NULL){
   
   cols <- palette(n)
@@ -123,7 +228,25 @@ makeColorFun <- function(xmin, xmax, n=100, palette=cfd.colors, underflow=NULL, 
 
 
 
-
+#' Plots a color keymap.
+#'
+#' Plots a standalone keymap on its own window.
+#'
+#' @param levels Values that should be plotted.
+#' @param colors Corresponding colors.
+#' @param side On which side should the legend be plotted.
+#' @param border Color of the border.
+#' @param mar Size of the margins.
+#' @param spc A parameter that contracts (spc < 1) or expands (z>1) the size of the keymap.
+#' @param barw Width of the keymap.
+#' @param ... Parameters passed to \code{\link{text}} function.
+#' @seealso rect text contourf
+#' @examples
+#' keyWindow(1:10, side=4)
+#' keyWindow(1:10, side=1)
+#' keyWindow(1:10, side=4, spc=0.6)
+#' keyWindow(1:10, side=4, barw=0.2)
+#' @export
 keyWindow <- function( levels, colors, side=4,
                       border=NULL, mar=rep(0.2, 4), spc=1, barw=0.5, ...){
 

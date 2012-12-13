@@ -4,7 +4,7 @@
 \usage{
   latexOutput(suffix, tab, tab.lay, header = NULL,
     units = NULL, pos = NULL, dname = NULL,
-    preamble = NULL)
+    preamble = NULL, hl = NULL, postinfo = NULL)
 }
 \arguments{
   \item{suffix}{Suffix of the file name.}
@@ -28,6 +28,15 @@
 
   \item{preamble}{Some message that should be written
   before the header.}
+
+  \item{hl}{Put a horizontal line every hl lines for
+  readability. If NULL, don't put the lines.}
+
+  \item{postinfo}{Additional lines at the end of the
+  table.}
+}
+\value{
+  Name of the .tex files generated.
 }
 \description{
   After generating a layout with \code{\link{tableLayout}}

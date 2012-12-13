@@ -83,10 +83,13 @@ tableLayout <- function(nlines, ntabcols, ntablines, byrow=FALSE, fillbyrow=TRUE
 #' @param pos LaTeX tabular position specifier for each variable.
 #' @param dname Directory name where the file should be written.
 #' @param preamble Some message that should be written before the header.
+#' @param hl Put a horizontal line every hl lines for readability. If NULL, don't put the lines.
+#' @param postinfo Additional lines at the end of the table.
+#' @return Name of the .tex files generated.
 #' @seealso \code{\link{tableLayout}}
 #' @export
 latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
-                         pos=NULL, dname=NULL, preamble=NULL){
+                         pos=NULL, dname=NULL, preamble=NULL, hl=NULL, postinfo=NULL){
 
   npages <- dim(tab.lay)[3]
   
@@ -138,9 +141,11 @@ latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
     return(pag)
     
   }
+  ff <- character(npages)
   
   for (i in 1:npages){
     fname <- file.path(dname, paste(suffix, '-', i, '.tex', sep=''))
+    ff[i] <- fname
     con <- file(fname, open='w')
     wline(con, '\\begin{tabular}{', pos, '}')
     hline(con, 2)
@@ -148,14 +153,88 @@ latexOutput <- function(suffix, tab, tab.lay,  header=NULL, units=NULL,
     wline2(con, paste(header, collapse=' & '))
     if (!is.null(units)) wline2(con, paste(rep(units, ncols), collapse=' & '))
     hline(con, 2)
-    write.table(buildTable(tab, tab.lay[,,i]), file=con, quote=FALSE, sep=' & ', eol='\\\\\n',
-                row.names=FALSE, col.names=FALSE)
+    xtab <- buildTable(tab, tab.lay[,,i])
+    if (is.null(hl))
+      write.table(xtab, file=con, quote=FALSE, sep=' & ', eol='\\\\\n',
+                  row.names=FALSE, col.names=FALSE)
+    else{
+      ntl <- dim(xtab)[1]
+      istart <- 1
+      while(TRUE){
+        iend <- istart + hl - 1
+        if (iend < ntl){
+          write.table(xtab[istart:iend,, drop=FALSE], file=con, quote=FALSE, sep=' & ', eol='\\\\\n',
+                      row.names=FALSE, col.names=FALSE)
+          hline(con,1)
+          istart <- iend+1
+        }else{
+          write.table(xtab[istart:ntl,, drop=FALSE], file=con, quote=FALSE, sep=' & ', eol='\\\\\n',
+                      row.names=FALSE, col.names=FALSE)
+          break
+        }
+      }
+    }
     hline(con, 2)
+    if (!is.null(postinfo)){
+      wline2(con, postinfo)
+      hline(con, 2)
+    }
     wline(con, '\\end{tabular}')
     close(con)
   }
-  
+
+  return(ff)
 }
   
   
+
+#' Multiple page table generation.
+#'
+#' Function that automates multiple page table creation.
+#'
+#' When writing scientific reports, often it is necessary to write very long tables
+#' that span several pages. This function wraps the tables created with \code{\link{latexOutput}}
+#' with a LaTeX table environment, including captions and labels. In the report,
+#' instead putting the each individual table, this function will generate an file that
+#' can be included directly.
+#'
+#' @param fname Name of the LaTeX include file to generate.
+#' @param ftab Array with individual table names.
+#' @param caption Caption to be used in each figure. At the end, Part i/n is included.
+#' @param lab.prefix Label prefix. If NULL, the labels will be tab:ftab[i]-i.
+#' @param center Center the tabular environment?
+#' @param pos LaTeX float positioning parameters.
+#' @param charsize Different character size to use - "footnotesize" for example.
+#' @export
+latexTable <- function(fname, ftab, caption, lab.prefix=NULL, center=TRUE, pos=NULL, charsize=NULL){
+
+  ntab <- length(ftab)
+  con <- file(fname, open='w')
+  for (i in 1:ntab){
+    cat("\\begin{table}", file=con)
+    if (!is.null(pos))
+      cat(pos, "\n", file=con)
+    else
+      cat("\n", file=con)
+      
+    cat("\\caption{", caption, " Parte ", i, "/", ntab, ".}\n", file=con, sep='')
+    if (center) cat("\\centering\n", file=con)
     
+    xf <- basename2(ftab[i], '.tex')
+
+    if (!is.null(charsize)) cat("{\\", charsize, "\n", file=con, sep='')
+
+    tablines <- readLines(ftab[i])
+    writeLines(tablines, con=con)
+    
+    if (!is.null(charsize)) cat("}\n", file=con, sep='')
+
+    if (is.null(lab.prefix))
+      cat("\\label{tab:", xf, "}\n", file=con, sep='')
+    else
+      cat("\\label{", lab.prefix, '-', i, "}\n", file=con, sep='')
+    cat('\\end{table}\n\n\n', file=con)
+  }
+
+  close(con)
+}

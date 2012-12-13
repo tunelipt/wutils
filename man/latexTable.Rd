@@ -1,0 +1,38 @@
+\name{latexTable}
+\alias{latexTable}
+\title{Multiple page table generation.}
+\usage{
+  latexTable(fname, ftab, caption, lab.prefix = NULL,
+    center = TRUE, pos = NULL, charsize = NULL)
+}
+\arguments{
+  \item{fname}{Name of the LaTeX include file to generate.}
+
+  \item{ftab}{Array with individual table names.}
+
+  \item{caption}{Caption to be used in each figure. At the
+  end, Part i/n is included.}
+
+  \item{lab.prefix}{Label prefix. If NULL, the labels will
+  be tab:ftab[i]-i.}
+
+  \item{center}{Center the tabular environment?}
+
+  \item{pos}{LaTeX float positioning parameters.}
+
+  \item{charsize}{Different character size to use -
+  "footnotesize" for example.}
+}
+\description{
+  Function that automates multiple page table creation.
+}
+\details{
+  When writing scientific reports, often it is necessary to
+  write very long tables that span several pages. This
+  function wraps the tables created with
+  \code{\link{latexOutput}} with a LaTeX table environment,
+  including captions and labels. In the report, instead
+  putting the each individual table, this function will
+  generate an file that can be included directly.
+}
+

@@ -472,16 +472,18 @@ hypot <- function(...){
 #' for n-dimensional cubes.
 #'
 #' @param ... Numeric vectors. The first arguments run faster than later ones.
+#' @param use.array Return result as a list of arrays?
+#' @param use.df Return result as a data.frame (if \code{arr=FALSE})?
 #' @return List with arrays.
 #' @examples
-#' g <- ndgrid(1:3, 11:14)
-#' gg <- lapply(g, as.double)
-#' print(cbind(gg[[1]], gg[[2]]))
-#' h <- ndgrid(1:3, 11:14, 101:102)
-#' hh <- lapply(h, as.double)
-#' print(cbind(hh[[1]], hh[[2]], hh[[3]]))
+#' g <- ndgrid(x=1:3, y=11:14)
+#' print(g)
+#' h <- ndgrid(x=1:3, y=11:14, z=101:102)
+#' print(h)
+#' w <- ndgrid(x=1:3, y=11:14, use.array=TRUE)
+#' print(w)
 #' @export
-ndgrid <- function(...){
+ndgrid <- function(..., use.array=FALSE, use.df=TRUE){
 
   lst <- list(...)
 
@@ -501,8 +503,13 @@ ndgrid <- function(...){
 
     x <- rep(lst[[i]], each=each, times=r)
 
-    dim(x) <- dims
+    if (use.array) dim(x) <- dims
     res[[i]] <- x
   }
+  names(res) <- names(lst)
+  if (!use.array)
+    if (use.df)
+      res <- data.frame(res)
   return(res)
+      
 }

@@ -2,11 +2,16 @@
 \alias{ndgrid}
 \title{Creates n-dimensional grids.}
 \usage{
-  ndgrid(...)
+  ndgrid(..., use.array = FALSE, use.df = TRUE)
 }
 \arguments{
   \item{...}{Numeric vectors. The first arguments run
   faster than later ones.}
+
+  \item{use.array}{Return result as a list of arrays?}
+
+  \item{use.df}{Return result as a data.frame (if
+  \code{arr=FALSE})?}
 }
 \value{
   List with arrays.
@@ -23,11 +28,11 @@
   cubes.
 }
 \examples{
-g <- ndgrid(1:3, 11:14)
-gg <- lapply(g, as.double)
-print(cbind(gg[[1]], gg[[2]]))
-h <- ndgrid(1:3, 11:14, 101:102)
-hh <- lapply(h, as.double)
-print(cbind(hh[[1]], hh[[2]], hh[[3]]))
+g <- ndgrid(x=1:3, y=11:14)
+print(g)
+h <- ndgrid(x=1:3, y=11:14, z=101:102)
+print(h)
+w <- ndgrid(x=1:3, y=11:14, use.array=TRUE)
+print(w)
 }
 

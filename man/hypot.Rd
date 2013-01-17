@@ -12,6 +12,7 @@
 }
 \description{
   Calculates the n dimensional hypotenuse of the arguments.
+  It calculates the Euclidean norm of the arguments.
 }
 \details{
   The hypotenuse of a 2D triangle is given by \code{h =

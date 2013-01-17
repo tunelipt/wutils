@@ -438,7 +438,8 @@ bindArgs <- function(..., bindfun=rbind, fun=NULL, recursive=0)
 
 #' Calculates the hypotenuse of the arguments.
 #'
-#' Calculates the n dimensional hypotenuse of the arguments.
+#' Calculates the n dimensional hypotenuse of the arguments. It calculates
+#' the Euclidean norm of the arguments.
 #'
 #' The hypotenuse of a 2D triangle is given by \code{h = sqrt(x^2 + y^2)}.
 #' In the n dimensional case, keep adding the terms...
@@ -453,7 +454,7 @@ hypot <- function(...){
   args <- list(...)
   h <- 0
   for (a in args)
-    h <- h + abs(args)**2
+    h <- h + abs(a)**2
   return(sqrt(h))
 }
 

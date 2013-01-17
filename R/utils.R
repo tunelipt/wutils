@@ -458,3 +458,51 @@ hypot <- function(...){
   return(sqrt(h))
 }
 
+
+
+#' Creates n-dimensional grids.
+#'
+#' Creates an n dimensional grid given
+#' values in each coordinate direction.
+#'
+#' Very often, rectangular grid is necessary given
+#' the coordinates along each direction resulting
+#' in the coordinates of each point in the grid. This
+#' function generalizes this such that it works
+#' for n-dimensional cubes.
+#'
+#' @param ... Numeric vectors. The first arguments run faster than later ones.
+#' @return List with arrays.
+#' @examples
+#' g <- ndgrid(1:3, 11:14)
+#' gg <- lapply(g, as.double)
+#' print(cbind(gg[[1]], gg[[2]]))
+#' h <- ndgrid(1:3, 11:14, 101:102)
+#' hh <- lapply(h, as.double)
+#' print(cbind(hh[[1]], hh[[2]], hh[[3]]))
+#' @export
+ndgrid <- function(...){
+
+  lst <- list(...)
+
+  dims <- sapply(lst, length)
+  nargs <- length(lst)
+  res <- list()
+  for (i in 1:nargs){
+    if (i == nargs)
+      r <- 1
+    else
+      r <- prod(dims[(i+1):nargs])
+
+    if (i == 1)
+      each <- 1
+    else
+      each <- prod(dims[1:(i-1)])
+
+    x <- rep(lst[[i]], each=each, times=r)
+
+    dim(x) <- dims
+    res[[i]] <- x
+  }
+  return(res)
+}

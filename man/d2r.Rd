@@ -1,0 +1,32 @@
+\name{d2r}
+\alias{d2r}
+\alias{r2d}
+\title{Conversion between degrees and radians.}
+\usage{
+  d2r(x)
+
+  r2d(x)
+}
+\arguments{
+  \item{x}{Numeric vector containing angle in degrees
+  (\code{d2r}) or radians (\code{r2d}).}
+}
+\value{
+  Angle in radians (\code{d2r}) or in degrees (\code{r2d})
+}
+\description{
+  Converts angles from degrees to radians and from radians
+  to to degrees.
+}
+\details{
+  \code{d2r} Degrees -> Radians. \code{r2d} Radians ->
+  Degrees.
+}
+\examples{
+ad <- 45
+ar <- d2r(ad)
+print(ar)
+ad2 <- r2d(ar)
+print(ad2)
+}
+

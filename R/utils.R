@@ -436,4 +436,24 @@ bindArgs <- function(..., bindfun=rbind, fun=NULL, recursive=0)
   bindList(list(...), bindfun=bindfun, fun=fun, recursive=recursive)
 
 
-  
+#' Calculates the hypotenuse of the arguments.
+#'
+#' Calculates the n dimensional hypotenuse of the arguments.
+#'
+#' The hypotenuse of a 2D triangle is given by \code{h = sqrt(x^2 + y^2)}.
+#' In the n dimensional case, keep adding the terms...
+#'
+#' @param ... Numeric vectors.
+#' @return Numeric vector.
+#' @examples
+#' print(hypot(3, 4))
+#' print(hypot(3,4,12))
+#' @export
+hypot <- function(...){
+  args <- list(...)
+  h <- 0
+  for (a in args)
+    h <- h + abs(args)**2
+  return(sqrt(h))
+}
+

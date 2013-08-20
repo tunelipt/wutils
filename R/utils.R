@@ -513,3 +513,88 @@ ndgrid <- function(..., use.array=FALSE, use.df=TRUE){
   return(res)
       
 }
+
+
+
+findStruct <- function(x, s=NULL){
+  if (is.list(x)){
+    info <- list(type=0, dim=length(x), names=list(names(x)))
+    return(findStruct(x[[1]], c(s, list(info))))
+  }else{
+    if (is.vector(x))
+      info <- (list(type=2, dim=length(x), names=list(names(x))))
+    else if (is.data.frame(x))
+      info <- (list(type=3, dim=dim(x), names=dimnames(x)))
+    else if (is.array(x))
+      info <- (list(type=1, dim=dim(x), names=dimnames(x)))
+    else
+      stop("The object should be a recursive list ending in an array-like structure")
+  }
+  return(c(s, list(info)))
+
+}
+              
+
+
+#' Converte uma lista em um array.
+#'
+#' Em quase todos os ensaios, existem dados que foram
+#' calculados para diferentes ângulos e estes dados
+#' estão armazenados em uma lista onde cada elemento
+#' corresponde a um ângulo. Se os dados tiverem mesmas
+#' dimensões em todos os ângulos, pode-se juntar tudo em
+#' um array de tamanho apropriado.
+#'
+#' Se cada elemento da lista que é fornecido como argumento
+#' (\code{xlst}) tiver a mesma dimensão, esta função cria 
+#' um array para armazenar todos estes dados. A única restrição
+#' é que as dimensões do array armazenado em \code{xlst} sejam
+#' as mesmas.
+#'
+#' @param xlst List de arrays com mesma dimensão.
+#' @return Array com dim=c(dim(xlst[[1]]), length(xlst)).
+#' @examples
+#' x <- lapply(1:5, function(i) array(rnorm(8*3*5), dim=c(8,3,5), dimnames=list(NULL, c('FX','FY','FZ'), paste('T', 1:5, sep=''))))
+#' y <- lst2array(x)
+#' 
+#' @export
+lst2array <- function(xlst){
+
+  s <- findStruct(xlst)
+  mylen <- function(z){
+    l <- 1
+    for (zz in z)
+      l <- l *zz
+    l
+  }
+  
+  mycat <- function(x, accu=double(0)){
+    if (is.list(x))
+      for (xx in x)
+        accu <- c(accu, mycat(xx))
+    else
+      accu <- c(accu, x)
+    return(accu)
+  }
+
+  x <- mycat(xlst)
+
+  nn <- length(s)
+  d <- integer(0)
+  for (i in nn:1)
+    d <- c(d, s[[i]]$dim)
+  dn <- NULL
+  for (i in nn:1)
+    dn <- c(dn, s[[i]]$names)
+  
+  dim(x) <- d
+  dimnames(x) <- dn
+
+  return(x)
+  
+  # Fill the data:
+  
+
+  return(arr)
+}
+

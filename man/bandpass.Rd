@@ -5,7 +5,8 @@
   bandpass(x, freq1, freq2, dt = NULL)
 }
 \arguments{
-  \item{x}{Array containing data to be filtered.}
+  \item{x}{Vector or matrix containing data to be filtered.
+  If matrix, each column corresponds to a time series.}
 
   \item{freq1}{Lower frequency below which data will be
   filtered.}
@@ -21,7 +22,7 @@
   The filtered signal
 }
 \description{
-  Uses \code{link{fft}} to compute a band pass filter to
+  Uses \code{link{mvfft}} to compute a band pass filter to
   the data.
 }
 \examples{

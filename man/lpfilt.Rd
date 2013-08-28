@@ -18,8 +18,8 @@
   The filtered signal
 }
 \description{
-  Uses \code{link{fft}} to compute a low pass filter to the
-  data.
+  Uses \code{link{mvfft}} to compute a low pass filter to
+  the data.
 }
 \examples{
 tt <- seq(0, 4, len=513)[1:512]

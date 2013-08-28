@@ -5,7 +5,9 @@
   integr(x, p = 1, dt = NULL)
 }
 \arguments{
-  \item{x}{Array containing data to be integrate.}
+  \item{x}{Vector or matrix containing data to be
+  integrated. If matrix, each column corresponds to a time
+  series.}
 
   \item{p}{Order of integration. Negative integers
   represent derivatives.}
@@ -19,7 +21,11 @@
 }
 \description{
   Implements integrals and derivatives of sampled data
-  using \code{\link{fft}}.
+  using \code{\link{mvfft}}.
+}
+\details{
+  Note that the function assumes that the signal has zero
+  mean. The nonzer mean is not integrated.
 }
 \examples{
 tt <- seq(0, 1, len=65)[1:64]

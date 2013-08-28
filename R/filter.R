@@ -2,7 +2,7 @@
 
 #' Low pass filter.
 #'
-#' Uses \code{link{fft}} to compute a low pass filter to the data.
+#' Uses \code{link{mvfft}} to compute a low pass filter to the data.
 #'
 #' @param x Vector or matrix containing data to be filtered. If matrix, each column corresponds to a time series.
 #' @param freq Frequency below which data will be filtered.
@@ -44,9 +44,9 @@ lpfilt <- function(x, freq, dt=NULL){
 
 #' High pass filter.
 #'
-#' Uses \code{link{fft}} to compute a high pass filter to the data.
+#' Uses \code{link{mvfft}} to compute a high pass filter to the data.
 #'
-#' @param x Array containing data to be filtered.
+#' @param x Vector or matrix containing data to be filtered. If matrix, each column corresponds to a time series.
 #' @param freq Frequency above which data will be filtered.
 #' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
 #' @return The filtered signal
@@ -63,30 +63,35 @@ lpfilt <- function(x, freq, dt=NULL){
 hpfilt <- function(x, freq, dt=NULL){
 
   
-  N <- length(x)
+  dx <- dim(x)
   dtnull <- is.null(dt)
-  X <- fft(x)/N
-
   if (dtnull) dt <- deltat(x)
+
+  x <- as.matrix(x)
+  
+  N <- nrow(x)
+  X <- mvfft(x)/N
+
   period <- N*dt
   df <- 1/period
   f <- (0:(N-1))*df
   nm1 <- N-1
   nf <- freq %/% df
 
-  X[1:(nf+1)] <- 0.0
-  X[(N-nf+1):N] <- 0.0
+  X[1:(nf+1),] <- 0.0
+  X[(N-nf+1):N,] <- 0.0
   
-  xfilt <- Re(fft(X, inv=TRUE))
+  xfilt <- Re(mvfft(X, inv=TRUE))
+  dim(xfilt) <- dx
   if (dtnull) xfilt <- ts(xfilt, start=0, deltat=dt)
   return(xfilt)
 }
 
 #' Band  filter.
 #'
-#' Uses \code{link{fft}} to compute a band filter to the data.
+#' Uses \code{link{mvfft}} to compute a band filter to the data.
 #'
-#' @param x Array containing data to be filtered.
+#' @param x Vector or matrix containing data to be filtered. If matrix, each column corresponds to a time series.
 #' @param freq1 Lower frequency above which data will be filtered.
 #' @param freq2 Higher frequency below which data will be filtered.
 #' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
@@ -102,11 +107,16 @@ hpfilt <- function(x, freq, dt=NULL){
 #' legend(0, max(x, xhp), c("Signal", "Filtered Signal"), lty=c(1,2))
 #' @export
 bandfilt <- function(x, freq1, freq2, dt=NULL){
-  N <- length(x)
-  dtnull <- is.null(dt)
-  X <- fft(x)/N
 
+  dx <- dim(x)
+  dtnull <- is.null(dt)
   if (dtnull) dt <- deltat(x)
+
+  x <- as.matrix(x)
+  
+  N <- nrow(x)
+  X <- mvfft(x)/N
+
   period <- N*dt
   df <- 1/period
   f <- (0:(N-1))*df
@@ -116,10 +126,11 @@ bandfilt <- function(x, freq1, freq2, dt=NULL){
   faixa1 <- (nf1+2):(nf2)
   faixa2 <- N-faixa1
   
-  X[faixa1] <- 0.0
-  X[faixa2] <- 0.0
+  X[faixa1,] <- 0.0
+  X[faixa2,] <- 0.0
 
-  xfilt <- Re(fft(X, inv=TRUE))
+  xfilt <- Re(mvfft(X, inv=TRUE))
+  dim(xfilt) <- dx
   if (dtnull) xfilt <- ts(xfilt, start=0, deltat=dt)
   return(xfilt)
 }
@@ -127,9 +138,9 @@ bandfilt <- function(x, freq1, freq2, dt=NULL){
 
 #' Band pass filter.
 #'
-#' Uses \code{link{fft}} to compute a band pass filter to the data.
+#' Uses \code{link{mvfft}} to compute a band pass filter to the data.
 #'
-#' @param x Array containing data to be filtered.
+#' @param x Vector or matrix containing data to be filtered. If matrix, each column corresponds to a time series.
 #' @param freq1 Lower frequency below which data will be filtered.
 #' @param freq2 Higher frequency above which data will be filtered.
 #' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
@@ -147,13 +158,17 @@ bandfilt <- function(x, freq1, freq2, dt=NULL){
 bandpass <- function(x, freq1, freq2, dt=NULL)
   hpfilt(lpfilt(x, freq2, dt), freq1, dt)
 
-  
+
+
+
   
 #' Signal integrator and differentiator.
 #'
-#' Implements integrals and derivatives of sampled data using \code{\link{fft}}.
+#' Implements integrals and derivatives of sampled data using \code{\link{mvfft}}.
 #'
-#' @param x Array containing data to be integrate.
+#' Note that the function assumes that the signal has zero mean. The nonzer mean is not integrated.
+#'
+#' @param x Vector or matrix containing data to be integrated. If matrix, each column corresponds to a time series.
 #' @param p Order of integration. Negative integers represent derivatives.
 #' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
 #' @return A vector The integral of the signal.
@@ -169,24 +184,28 @@ bandpass <- function(x, freq1, freq2, dt=NULL)
 #' legend(0, max(x,dx,ix), c("Signal", "Derivative", "Integral"), lty=1:3)
 #' @export
 integr <- function(x, p=1, dt=NULL){
-
-  N <- length(x)
+  dx <- dim(x)
   dtnull <- is.null(dt)
-  X <- fft(x)/N
-
   if (dtnull) dt <- deltat(x)
+
+  x <- as.matrix(x)
+  
+  N <- nrow(x)
+  X <- mvfft(x)/N
+
   period <- N*dt
   df <- 1/period
   f <- (0:(N-1))*df
-
-  X[0] <- 0.0  # Necessário. Se não não funciona (x é periódico!!!)
+  X[1,] <- 0.0  # Necessário. Se não não funciona (x é periódico!!!)
   nd2 <- N %/% 2 + 1
   rest <- N-nd2
   base <- c(0, ((1:(nd2-1))*(2*pi*1i/period))^(-p))
   
   base2 <- Conj(rev(base[2:(1+rest)]))
   coefs <- c(base, base2)
-  xint <- Re(fft(X*coefs, inv=TRUE))
+  X <- apply(X, 2, function(y) y*coefs)
+  xint <- Re(mvfft(X, inv=TRUE))
+  dim(xint) <- dx
   if (dtnull) xint <- ts(xint, start=0, deltat=dt)
   return(xint)
 }

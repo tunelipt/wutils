@@ -5,7 +5,8 @@
   hpfilt(x, freq, dt = NULL)
 }
 \arguments{
-  \item{x}{Array containing data to be filtered.}
+  \item{x}{Vector or matrix containing data to be filtered.
+  If matrix, each column corresponds to a time series.}
 
   \item{freq}{Frequency above which data will be filtered.}
 
@@ -17,7 +18,7 @@
   The filtered signal
 }
 \description{
-  Uses \code{link{fft}} to compute a high pass filter to
+  Uses \code{link{mvfft}} to compute a high pass filter to
   the data.
 }
 \examples{

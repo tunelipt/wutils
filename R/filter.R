@@ -78,9 +78,9 @@ hpfilt <- function(x, freq, dt=NULL){
   return(xfilt)
 }
 
-#' Band pass filter.
+#' Band  filter.
 #'
-#' Uses \code{link{fft}} to compute a band pass filter to the data.
+#' Uses \code{link{fft}} to compute a band filter to the data.
 #'
 #' @param x Array containing data to be filtered.
 #' @param freq1 Lower frequency above which data will be filtered.
@@ -121,6 +121,29 @@ bandfilt <- function(x, freq1, freq2, dt=NULL){
 }
 
 
+#' Band pass filter.
+#'
+#' Uses \code{link{fft}} to compute a band pass filter to the data.
+#'
+#' @param x Array containing data to be filtered.
+#' @param freq1 Lower frequency below which data will be filtered.
+#' @param freq2 Higher frequency above which data will be filtered.
+#' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
+#' @return The filtered signal
+#' @examples
+#'  tt <- seq(0, 4, len=513)[1:512]
+#'  dt <- tt[2]
+#'  x = ts(cos(4*pi*tt) + 1.5*sin(2*pi*tt) + 3 + cos(6*2*pi*tt),start=0,
+#'  deltat=dt)
+#'  xhp <- hpfilt(x, 1.5)
+#'  plot(x, ylim=range(x, xlp))
+#'  lines(xhp, lty=2)
+#' legend(0, max(x, xhp), c("Signal", "Filtered Signal"), lty=c(1,2))
+#' @export
+bandpass <- function(x, freq1, freq2, dt=NULL)
+  hpfilt(lpfilt(x, freq2, dt), freq1, dt)
+
+  
   
 #' Signal integrator and differentiator.
 #'

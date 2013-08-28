@@ -1,6 +1,6 @@
 \name{bandfilt}
 \alias{bandfilt}
-\title{Band pass filter.}
+\title{Band  filter.}
 \usage{
   bandfilt(x, freq1, freq2, dt = NULL)
 }
@@ -21,8 +21,8 @@
   The filtered signal
 }
 \description{
-  Uses \code{link{fft}} to compute a band pass filter to
-  the data.
+  Uses \code{link{fft}} to compute a band filter to the
+  data.
 }
 \examples{
 tt <- seq(0, 4, len=513)[1:512]

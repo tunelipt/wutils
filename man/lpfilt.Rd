@@ -5,7 +5,8 @@
   lpfilt(x, freq, dt = NULL)
 }
 \arguments{
-  \item{x}{Array containing data to be filtered.}
+  \item{x}{Vector or matrix containing data to be filtered.
+  If matrix, each column corresponds to a time series.}
 
   \item{freq}{Frequency below which data will be filtered.}
 

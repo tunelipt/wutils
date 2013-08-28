@@ -4,7 +4,7 @@
 #'
 #' Uses \code{link{fft}} to compute a low pass filter to the data.
 #'
-#' @param x Array containing data to be filtered.
+#' @param x Vector or matrix containing data to be filtered. If matrix, each column corresponds to a time series.
 #' @param freq Frequency below which data will be filtered.
 #' @param dt Time steps betweend samples. If not specified, \code{x} is assumed to be a time series \code{\link{ts}} object.
 #' @return The filtered signal
@@ -19,20 +19,24 @@
 #' legend(0, max(x, xlp), c("Signal", "Filtered Signal"), lty=c(1,2))
 #' @export
 lpfilt <- function(x, freq, dt=NULL){
-
-  N <- length(x)
+  dx <- dim(x)
   dtnull <- is.null(dt)
-  X <- fft(x)/N
-
   if (dtnull) dt <- deltat(x)
+
+  x <- as.matrix(x)
+  
+  N <- nrow(x)
+  X <- mvfft(x)/N
+
   period <- N*dt
   df <- 1/period
   f <- (0:(N-1))*df
   nm1 <- N-1
   nf <- freq %/% df
 
-  X[(nf+2):(N-nf)] <- 0.0
-  xfilt <- Re(fft(X, inv=TRUE))
+  X[(nf+2):(N-nf),] <- 0.0
+  xfilt <- Re(mvfft(X, inv=TRUE))
+  dim(xfilt) <- dx
   if (dtnull) xfilt <- ts(xfilt, start=0, deltat=dt)
   return(xfilt)
 }

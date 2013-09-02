@@ -210,4 +210,80 @@ integr <- function(x, p=1, dt=NULL){
   return(xint)
 }
 
+#' Number of independent values in DFT of real signals.
+#'
+#' This function calculates the number of independent values
+#' in Discrete Fourier Transform calculations of real signals.
+#'
+#' When calculating the Discrete Fourier Transform (DFT)
+#' of real signals, there is a symmetry on the resulting
+#' values:
+#' \deqn{X_k = X^*_{N-k}}
+#' where X is the discrete Fourier transform of the signal.
+#' The number of independent values in the signal depends on whether the length
+#' of the signal is even or odd. This function returns the correct number for any case.
+#'
+#' @param N Number of samples in a signal.
+#' @return Number of indepent (complex) values in the DFT of the signal.
+#' @examples
+#' print(fourierNumUtil(10))
+#' print(fourierNumUtil(11))
+#' @export
+fourierNumUtil <- function(N) 1 + ceiling( (N-1)/2 )
 
+
+#' Resamples a data set
+#'
+#' This function uses trigonometric interpolation to resample a time series.
+#'
+#' Sometimes it is interesting to resample a time series so that a greater
+#' resolution is available. This function uses trigonometric interpolation
+#' to resample the time series. The parameter \code{m} is the number of
+#' additional points that will be added to the signal. The function also
+#' works on arrays of data where each column represents a time series.
+#'
+#' @param x Vector or matrix of data to be resampled.
+#' @param m Number of additional points to be added.
+#' @return Resampled data. If a \code{\link{ts}} object was used, a new object with the resampled frequency is returned.
+#' @examples
+#' x <- seq(0, 1, len=11)
+#' y <- ts(sin(2*pi*x)[1:10], start=0, deltat=x[2]-x[1])
+#' y2 <- resample(y, 30)
+#' x1 <- seq(0, 1, len=201)
+#' y1 <- sin(2*pi*x1)
+#' plot(x1, y1, xlab="Time", ylab=expression(sin(2*pi*t)), ty='l')
+#' points(y, ty='p')
+#' points(y2, pch=3, col=3)
+#' legend("topright", c(expression(sin(2*pi*t)), "Original signal", "Resampled signal"), pch=c(-1, 1,3), col=c(1, 1,3), lty=c(1, -1,-1))
+#' @export
+resample <- function(x, m){
+  dx <- dim(x)
+  xts <- FALSE
+  if (is.ts(x)){
+    xts <- TRUE
+    st <- start(x)
+    freq <- frequency(x)
+  }
+
+  
+  x <- as.matrix(x)
+  N <- nrow(x)
+  
+  
+  X <- 1/N * mvfft(x)
+
+  Nutil <- fourierNumUtil(N)
+  X1 <- X[1:Nutil,, drop=FALSE]
+  X2 <- X[(Nutil+1):N,, drop=FALSE]
+
+  pad <- complex(m*ncol(x))
+  dim(pad) <- c(m, ncol(x))
+  Xnew <- rbind(X1, pad, X2)
+
+  xnew <- Re(mvfft(Xnew, inv=TRUE))
+
+  if (is.null(dx)) dim(xnew) <- NULL
+  if (xts) xnew <- ts(xnew, start=st, freq=freq*(N + m) / N)
+  
+  return(xnew)
+}

@@ -1,0 +1,40 @@
+\name{resample}
+\alias{resample}
+\title{Resamples a data set}
+\usage{
+  resample(x, m)
+}
+\arguments{
+  \item{x}{Vector or matrix of data to be resampled.}
+
+  \item{m}{Number of additional points to be added.}
+}
+\value{
+  Resampled data. If a \code{\link{ts}} object was used, a
+  new object with the resampled frequency is returned.
+}
+\description{
+  This function uses trigonometric interpolation to
+  resample a time series.
+}
+\details{
+  Sometimes it is interesting to resample a time series so
+  that a greater resolution is available. This function
+  uses trigonometric interpolation to resample the time
+  series. The parameter \code{m} is the number of
+  additional points that will be added to the signal. The
+  function also works on arrays of data where each column
+  represents a time series.
+}
+\examples{
+x <- seq(0, 1, len=11)
+y <- ts(sin(2*pi*x)[1:10], start=0, deltat=x[2]-x[1])
+y2 <- resample(y, 30)
+x1 <- seq(0, 1, len=201)
+y1 <- sin(2*pi*x1)
+plot(x1, y1, xlab="Time", ylab=expression(sin(2*pi*t)), ty='l')
+points(y, ty='p')
+points(y2, pch=3, col=3)
+legend("topright", c(expression(sin(2*pi*t)), "Original signal", "Resampled signal"), pch=c(-1, 1,3), col=c(1, 1,3), lty=c(1, -1,-1))
+}
+

@@ -316,48 +316,48 @@ keyWindow <- function( levels, colors, side=4,
 makeDevice <- function(dev='pdf', width=6, height=6, ..., dpi=96, pointsize=16){
   wb <- round(width * dpi)
   hb <- round(width * dpi)
-
+  w <- width
+  h <- height
   if (dev=='pdf')
-    fun <- function(bname, width=width, height=height) pdf(paste(bname, '.pdf', sep=''),
+    fun <- function(bname, width=w, height=h) pdf(paste(bname, '.pdf', sep=''),
                                           width=width, height=height, ...)
   else if (dev=='xfig') 
-    fun <- function(bname, width=width, height=height) xfig(paste(bname, '.fig', sep=''),
+    fun <- function(bname, width=w, height=h) xfig(paste(bname, '.fig', sep=''),
                                           width=width, height=height, ...)
   else if (dev=='pictex')
-    fun <- function(bname, width=width, height=height) pictex(paste(bname, '.tex', sep=''),
+    fun <- function(bname, width=w, height=h) pictex(paste(bname, '.tex', sep=''),
                                           width=width, height=height, ...)
   else if (dev=='svg')
-    fun <- function(bname, width=width, height=height) svg(paste(bname, '.svg', sep=''),
+    fun <- function(bname, width=w, height=h) svg(paste(bname, '.svg', sep=''),
                                           width=width, height=height, ...)
   else if (dev=='wmf')
-    fun <- function(bname, width=width, height=height) win.metafile(paste(bname, '.wmf', sep=''),
+    fun <- function(bname, width=w, height=h) win.metafile(paste(bname, '.wmf', sep=''),
                                           width=width, height=height, ...)
   else if (dev=='postscript')
-    fun <- function(bname, width=width, height=height) postscript(paste(bname, '.eps', sep=''),
+    fun <- function(bname, width=w, height=h) postscript(paste(bname, '.eps', sep=''),
                                           width=width, height=height,  horizontal=FALSE, ...)
   else if (dev=='windows')
-    fun <- function(bname="", width=width, height=height) windows(width=width, height=height, ...)
+    fun <- function(bname="", width=w, height=h) windows(width=width, height=height, ...)
   else if (dev=='png')
-    fun <- function(bname, width=width, height=height) png(paste(bname, '.png', sep=''),
+    fun <- function(bname, width=w, height=h) png(paste(bname, '.png', sep=''),
                                        width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
   else if (dev=='jpeg')
-    fun <- function(bname, width=width, height=height) jpeg(paste(bname, '.jpg', sep=''),
+    fun <- function(bname, width=w, height=h) jpeg(paste(bname, '.jpg', sep=''),
                                        width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
   else if (dev=='bmp')
-    fun <- function(bname, width=width, height=height) bmp(paste(bname, '.bmp', sep=''),
+    fun <- function(bname, width=w, height=h) bmp(paste(bname, '.bmp', sep=''),
                                        width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
   else if (dev=='tiff')
-    fun <- function(bname, width=width, height=height) tiff(paste(bname, '.tiff', sep=''),
+    fun <- function(bname, width=w, height=h) tiff(paste(bname, '.tiff', sep=''),
                                        width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
   else if (dev=='X11')
-    fun <- function(display="", width=width, height=height) X11(display, width=width,
+    fun <- function(display="", width=w, height=h) X11(display, width=width,
                                                height=height, ...)
   else if (dev=='quartz')
-    fun <- function(title="", width=width, height=height) quartz(title, width=width,
+    fun <- function(title="", width=w, height=h) quartz(title, width=width,
                                              height=height, ...)
-  else
-    fun <- function(bname, width=width, height=width) pdf(paste(bname, '.pdf', sep=''),
-                                          width=width, height=height, ...)
+  else # Don't do anything!
+    fun <- function(bname="", width=w, height=w) cat("New plot\n")
 
   return(fun)
 }

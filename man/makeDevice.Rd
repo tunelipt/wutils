@@ -1,0 +1,49 @@
+\name{makeDevice}
+\alias{makeDevice}
+\title{Generic graphics device creator}
+\usage{
+  makeDevice(dev = "pdf", width = 6, height = 6, ...,
+    dpi = 96, pointsize = 16)
+}
+\arguments{
+  \item{dev}{Character containing device name.}
+
+  \item{width}{Default width}
+
+  \item{height}{Default height}
+
+  \item{...}{Other parameters that will passed on to tghe
+  device function.}
+
+  \item{dpi}{Dots per inche for use in bitmap devices.}
+
+  \item{pointsize}{Default size for plotted text in bitmap
+  devices.}
+}
+\description{
+  An interface that creates graphical devices from a string
+  characterizing the name.
+}
+\details{
+  Very often different types of graphics need to be
+  created. It is very annoying to enter all the parameters
+  one at a time. Given the name of the device type and the
+  size, this function returns a function that creates the
+  appropriate device with the correct file extension.
+
+  The accepted devices are 'pdf', 'xfig', 'pictex', 'svg',
+  'wmf', 'postscript' (eps), 'window', 'png', 'jpeg',
+  'bmp', 'tiff', 'X11', 'quartz'. Default is pdf. For
+  bitmaps the default resolution is 80 dpi.
+}
+\examples{
+fun <- makeDevice('pdf')
+fun('teste')  # Create teste.pdf file.
+plot(1:10)
+dev.off()
+fun <- makeDevice('png')
+fun('teste') # Create teste.png file.
+plot(1:10)
+dev.off()
+}
+

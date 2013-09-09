@@ -283,3 +283,83 @@ keyWindow <- function( levels, colors, side=4,
 
 }
   
+
+#' Generic graphics device creator
+#'
+#' An interface that creates graphical devices from a string characterizing the name.
+#'
+#' Very often different types of graphics need to be created. It is very annoying
+#' to enter all the parameters one at a time. Given the name of the device type and the size,
+#' this function returns a function that creates the appropriate device with the correct
+#' file extension.
+#'
+#' The accepted devices are 'pdf', 'xfig', 'pictex', 'svg', 'wmf', 'postscript' (eps),
+#' 'window', 'png', 'jpeg', 'bmp', 'tiff', 'X11', 'quartz'. Default is pdf. For bitmaps
+#' the default resolution is 80 dpi.
+#'
+#' @param dev Character containing device name.
+#' @param width Default width 
+#' @param height Default height
+#' @param ... Other parameters that will passed on to tghe device function.
+#' @param dpi Dots per inche for use in bitmap devices.
+#' @param pointsize Default size for plotted text in bitmap devices.
+#' @examples
+#' fun <- makeDevice('pdf')
+#' fun('teste')  # Create teste.pdf file.
+#' plot(1:10)
+#' dev.off()
+#' fun <- makeDevice('png')
+#' fun('teste') # Create teste.png file.
+#' plot(1:10)
+#' dev.off()
+#' @export
+makeDevice <- function(dev='pdf', width=6, height=6, ..., dpi=96, pointsize=16){
+  wb <- round(width * dpi)
+  hb <- round(width * dpi)
+
+  if (dev=='pdf')
+    fun <- function(bname, width=width, height=height) pdf(paste(bname, '.pdf', sep=''),
+                                          width=width, height=height, ...)
+  else if (dev=='xfig') 
+    fun <- function(bname, width=width, height=height) xfig(paste(bname, '.fig', sep=''),
+                                          width=width, height=height, ...)
+  else if (dev=='pictex')
+    fun <- function(bname, width=width, height=height) pictex(paste(bname, '.tex', sep=''),
+                                          width=width, height=height, ...)
+  else if (dev=='svg')
+    fun <- function(bname, width=width, height=height) svg(paste(bname, '.svg', sep=''),
+                                          width=width, height=height, ...)
+  else if (dev=='wmf')
+    fun <- function(bname, width=width, height=height) win.metafile(paste(bname, '.wmf', sep=''),
+                                          width=width, height=height, ...)
+  else if (dev=='postscript')
+    fun <- function(bname, width=width, height=height) postscript(paste(bname, '.eps', sep=''),
+                                          width=width, height=height,  horizontal=FALSE, ...)
+  else if (dev=='windows')
+    fun <- function(bname="", width=width, height=height) windows(width=width, height=height, ...)
+  else if (dev=='png')
+    fun <- function(bname, width=width, height=height) png(paste(bname, '.png', sep=''),
+                                       width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
+  else if (dev=='jpeg')
+    fun <- function(bname, width=width, height=height) jpeg(paste(bname, '.jpg', sep=''),
+                                       width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
+  else if (dev=='bmp')
+    fun <- function(bname, width=width, height=height) bmp(paste(bname, '.bmp', sep=''),
+                                       width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
+  else if (dev=='tiff')
+    fun <- function(bname, width=width, height=height) tiff(paste(bname, '.tiff', sep=''),
+                                       width=width*dpi, height=height*dpi, pointsize=pointsize, ...)
+  else if (dev=='X11')
+    fun <- function(display="", width=width, height=height) X11(display, width=width,
+                                               height=height, ...)
+  else if (dev=='quartz')
+    fun <- function(title="", width=width, height=height) quartz(title, width=width,
+                                             height=height, ...)
+  else
+    fun <- function(bname, width=width, height=width) pdf(paste(bname, '.pdf', sep=''),
+                                          width=width, height=height, ...)
+
+  return(fun)
+}
+  
+    

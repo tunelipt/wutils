@@ -86,8 +86,7 @@ fidContour <- function(x = seq(0, 1, length.out = nrow(z)),
     stop("no proper 'z' matrix specified")
   if (!is.double(z)) 
     storage.mode(z) <- "double"
-  .Internal(filledcontour(as.double(x), as.double(y), z, as.double(levels), 
-                          col = col))
+    .filled.contour(x, y, z, levels, col)
   if (missing(plot.axes)) {
     if (axes) {
       title(main = "", xlab = "", ylab = "")
@@ -282,8 +281,7 @@ contourf <- function(x = seq(0, 1, length.out = nrow(z)),
     stop("no proper 'z' matrix specified")
   if (!is.double(z)) 
     storage.mode(z) <- "double"
-  .Internal(filledcontour(as.double(x), as.double(y), z, as.double(levels), 
-                          col = col))
+    .filled.contour(x, y, z, levels, col)
   if (missing(plot.axes)) {
     if (axes) {
       title(main = "", xlab = "", ylab = "")

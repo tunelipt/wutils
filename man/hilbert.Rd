@@ -20,7 +20,7 @@ Calculates the Hilbert transform of a vector or columns of a matrix
 \examples{
 x <- seq(0, 1, by=0.001)[1:1000]
 y <- sin(6*pi*x)
-H <- hilbert(x)
+H <- hilbert(y)
 plot(y, ty='l', ylim=range(y, Re(H), Im(H)))
 lines(abs(H), col=2, lwd=2)
 lines(Re(H), col=3)

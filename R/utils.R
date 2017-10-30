@@ -167,7 +167,8 @@ isStrNum <- function(s, dec='.'){
 #' print(readNumber("Enter a number: "))
 #' print(readInteger("Entre com um inteiro: ", pt=TRUE))
 #' print(readNumber("Entre com um numero: ", pt=FALSE))
-#' @export
+#' @aliases readInteger readNumber
+#' #' @export
 readInteger <- function(msg='', pt=FALSE){
   if (pt)
     question <- "Entre com um inteiro!\n"

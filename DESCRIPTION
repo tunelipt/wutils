@@ -1,5 +1,5 @@
 Package: wutils
-Version: 0.8.5
+Version: 0.9.0
 Date: 2012-02-03
 Title: Useful functions for data processing in a wind tunnel
 Author: Paulo J. S. Jabardo <pjabardo@ipt.br>
@@ -19,3 +19,4 @@ Collate:
     'turb.R'
     'utils.R'
     'trig.R'
+RoxygenNote: 6.0.1
